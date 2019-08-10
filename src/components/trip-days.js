@@ -5,4 +5,4 @@ export const getTravelPlan = () => {
     <ul class="trip-days">
       ${getTripDay()}
     </ul>`;
-}
+};
