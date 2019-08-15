@@ -3,6 +3,7 @@ import {getMenu} from './components/menu';
 import {getFilters} from './components/filters';
 import {getSort} from './components/sort';
 import {getTravelPlan} from './components/trip-days';
+import {getMockData} from  './data';
 
 
 const mainInfoContainer = document.querySelector(`.trip-info`);
@@ -18,3 +19,4 @@ renderComponents(getMenu(), controlsContainer, `afterbegin`);
 renderComponents(getFilters(), controlsContainer, `beforeend`);
 renderComponents(getSort(), tripEvents, `beforeend`);
 renderComponents(getTravelPlan(), tripEvents, `beforeend`);
+
