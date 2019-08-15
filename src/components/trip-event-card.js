@@ -1,13 +1,14 @@
 import {getMockData} from '../data';
+import {createOffer} from './offer';
+// import {getRandomElem} from './components/utils';
 
-
-export const getTripEventCard = ({icon, timeEnd, timeStart, differenceTime, eventPrice, title, offer: {price, type}} = getMockData()) => {
+export const getTripEventCard = ({icon, getTitle, timeEnd, timeStart, differenceTime, eventPrice, city, offer} = getMockData()) => {
   return `<li class="trip-events__item">
   <div class="event">
     <div class="event__type">
-      <img class="event__type-icon" width="42" height="42" src=${icon} alt="Event type icon">
+      <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png"alt="Event type icon">
     </div>
-    <h3 class="event__title">${title}</h3>
+    <h3 class="event__title">${getTitle} ${city}</h3>
 
     <div class="event__schedule">
       <p class="event__time">
@@ -24,11 +25,7 @@ export const getTripEventCard = ({icon, timeEnd, timeStart, differenceTime, even
 
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
-      <li class="event__offer">
-        <span class="event__offer-title">${type}</span>
-        +
-        €&nbsp;<span class="event__offer-price">${price}</span>
-       </li>
+      ${createOffer(offer).join(``)}
     </ul>
 
     <button class="event__rollup-btn" type="button">
@@ -37,4 +34,4 @@ export const getTripEventCard = ({icon, timeEnd, timeStart, differenceTime, even
   </div>
 </li>`;
 };
-// 1H 30M
+
