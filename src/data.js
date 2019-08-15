@@ -1,5 +1,5 @@
 import {getRandomElem} from './components/utils';
-// import {getRandomBoolean} from './components/utils';
+import {getRandomBoolean} from './components/utils';
 // import {getRandomNumber} from './components/utils';
 
 const OFFER_COUNT = 2;
@@ -16,10 +16,10 @@ const randomOffer = (offers, count) => {
 
 
 const priceType = [
-  {type: `Add luggage`, price: 10},
-  {type: `Switch to comfort class`, price: 150},
-  {type: `Add meal`, price: 2},
-  {type: `Choose seats`, price: 9}
+  {type: `Add luggage`, price: 10, isAdded: true},
+  {type: `Switch to comfort class`, price: 150, isAdded: true},
+  {type: `Add meal`, price: 2, isAdded: true},
+  {type: `Choose seats`, price: 9, isAdded: true}
 ];
 
 
@@ -84,11 +84,12 @@ export const getMockData = () => ({
   timeEnd: (`0` + dateOut.getHours()).slice(-2) +
  `:` +
  (`0` + dateOut.getMinutes()).slice(-2),
-  differenceTime: hoursRel(),
+  duration: hoursRel(),
   eventPrice: getRandomElem(priceList),
   // offer: getRandomElem(priceType),
   offer: randomOffer(priceType, OFFER_COUNT),
   icon: getRandomElem(eventType),
+  isFavorite: getRandomBoolean(),
   get getTitle() {
     switch (this.icon) {
       case `taxi`:
@@ -122,4 +123,8 @@ export const getMockData = () => ({
 
 // const eventCards = new Array(CARD_COUNT).fill(``).map(() => getMockData());
 // console.log(eventCards);
+
+// Аналогичным образом создайте структуры данных для остальных компонентов:
+export const menu = new Set([`Table`, `Stats`]); // меню
+export const filters = new Set([`Everything`, `Future`, `Past`]);
 

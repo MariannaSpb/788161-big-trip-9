@@ -6,6 +6,7 @@ import {getTravelPlan} from './components/trip-days';
 import {getMockData} from  './data';
 
 
+
 const mainInfoContainer = document.querySelector(`.trip-info`);
 const controlsContainer = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);

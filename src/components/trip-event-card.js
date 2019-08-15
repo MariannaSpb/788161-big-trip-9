@@ -2,11 +2,11 @@ import {getMockData} from '../data';
 import {createOffer} from './offer';
 // import {getRandomElem} from './components/utils';
 
-export const getTripEventCard = ({icon, getTitle, timeEnd, timeStart, differenceTime, eventPrice, city, offer} = getMockData()) => {
+export const getTripEventCard = ({icon, getTitle, timeEnd, timeStart, duration, eventPrice, city, offer} = getMockData()) => {
   return `<li class="trip-events__item">
   <div class="event">
     <div class="event__type">
-      <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png"alt="Event type icon">
+      <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png" alt="Event type icon">
     </div>
     <h3 class="event__title">${getTitle} ${city}</h3>
 
@@ -16,7 +16,7 @@ export const getTripEventCard = ({icon, getTitle, timeEnd, timeStart, difference
         —
         <time class="event__end-time" datetime="2019-03-18T11:00">${timeEnd}</time>
       </p>
-      <p class="event__duration">${differenceTime}H</p>
+      <p class="event__duration">${duration}H</p>
     </div>
 
     <p class="event__price">
