@@ -1,6 +1,6 @@
 import {getRandomElem} from './components/utils';
 // import {getRandomBoolean} from './components/utils';
-import {getRandomNumber} from './components/utils';
+// import {getRandomNumber} from './components/utils';
 
 const OFFER_COUNT = 2;
 const DESCRIPTION_COUNT = 3;
@@ -86,7 +86,7 @@ export const getMockData = () => ({
  (`0` + dateOut.getMinutes()).slice(-2),
   differenceTime: hoursRel(),
   eventPrice: getRandomElem(priceList),
- // offer: getRandomElem(priceType),
+  // offer: getRandomElem(priceType),
   offer: randomOffer(priceType, OFFER_COUNT),
   icon: getRandomElem(eventType),
   get getTitle() {
