@@ -2,7 +2,7 @@ import {getMockData} from '../data';
 import {createOffer} from './offer';
 // import {getRandomElem} from './components/utils';
 
-export const getTripEventCard = ({icon, getTitle, timeEnd, timeStart, duration, eventPrice, city, offer} = getMockData()) => {
+export const getTripEventCard = ({icon, getTitle, schedule: {duration, start}, eventPrice, city, offer, schedule} = getMockData()) => {
   return `<li class="trip-events__item">
   <div class="event">
     <div class="event__type">
@@ -12,11 +12,11 @@ export const getTripEventCard = ({icon, getTitle, timeEnd, timeStart, duration, 
 
     <div class="event__schedule">
       <p class="event__time">
-        <time class="event__start-time" datetime="2019-03-18T10:30">${timeStart}</time>
+        <time class="event__start-time" datetime=""2019-03-18T10:30"">${new Date(schedule.start).toLocaleTimeString()}</time>
         —
-        <time class="event__end-time" datetime="2019-03-18T11:00">${timeEnd}</time>
+        <time class="event__end-time" datetime=""2019-03-18T10:30"">${new Date(start + duration).toLocaleTimeString()}</time>
       </p>
-      <p class="event__duration">${duration}H</p>
+      <p class="event__duration">${new Date(duration).toLocaleTimeString()}H</p>
     </div>
 
     <p class="event__price">
