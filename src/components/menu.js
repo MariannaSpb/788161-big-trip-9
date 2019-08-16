@@ -1,6 +1,14 @@
-export const getMenu = () => {
-  return `<nav class="trip-controls__trip-tabs  trip-tabs">
-  <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
-  <a class="trip-tabs__btn" href="#">Stats</a>
-</nav>`;
+import {menu} from '../data';
+
+export const getMenuItem = (arr) => {
+  return arr.map((item) => `
+    <a class="trip-tabs__btn  ${item.isAdded ? `trip-tabs__btn--active` : ``}" href="#">${item.name}</a>`.trim());
 };
+
+export const getMenu = () => {
+  return `
+  <form class="trip-filters" action="#" method="get">
+    ${getMenuItem(menu).join(``)}
+  </form>`.trim();
+};
+

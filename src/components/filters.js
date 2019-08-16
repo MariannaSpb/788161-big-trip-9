@@ -1,13 +1,12 @@
 import {filters} from '../data';
 
-const newFilters = Array.from(filters); // ["Everything", "Future", "Past"]
 
 // создаем один фильтр
 export const getFilter = (filtersArray) => {
   return filtersArray.map((filterItem) => `
     <div class="trip-filters__filter">
-        <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked="">
-        <label class="trip-filters__filter-label" for="filter-everything">${filterItem}</label>
+        <input id="filter-${filterItem.name.toLowerCase()}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${filterItem.name.toLowerCase()}" ${filterItem.isChecked ? `checked` : ``}>
+        <label class="trip-filters__filter-label" for="filter-${filterItem.name.toLowerCase()}">${filterItem.name}</label>
     </div>`.trim());
 };
 
@@ -15,7 +14,7 @@ export const getFilter = (filtersArray) => {
 export const getFilters = () => {
   return `
   <form class="trip-filters" action="#" method="get">
-    ${getFilter(newFilters).join(``)}
+    ${getFilter(filters).join(``)}
   </form>`.trim();
 };
 

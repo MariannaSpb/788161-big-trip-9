@@ -125,6 +125,17 @@ export const getMockData = () => ({
 // console.log(eventCards);
 
 // Аналогичным образом создайте структуры данных для остальных компонентов:
-export const menu = new Set([`Table`, `Stats`]); // меню
-export const filters = new Set([`Everything`, `Future`, `Past`]);
+export const menu = [
+  {name: `Table`, isAdded: true},
+  {name: `Stats`, isAdded: false}
+
+];
+
+// export const filters = new Set([`Everything`, `Future`, `Past`]);
+
+export const filters = [
+  {name: `Everything`, isChecked: true},
+  {name: `Future`, isChecked: false},
+  {name: `Past`, isChecked: false},
+];
 
