@@ -1,7 +1,6 @@
 import {getEventEditeForm} from './form-edit';
-import {generationCard} from './card-generation';
+import {getTripEventCard} from './trip-event-card';
 
-const CARD_COUNT = 3;
 
 export const getTripDay = () => {
   return `
@@ -12,6 +11,6 @@ export const getTripDay = () => {
     </div>
     <ul class="trip-events__list">
       ${getEventEditeForm()}
-      ${generationCard(CARD_COUNT)}
+      ${getTripEventCard()}
     </ul>`;
 };

@@ -8,4 +8,4 @@ export const generationCard = (count) => {
   return cardArray.join(` `);
 };
 
-// const card = getTasck()
+

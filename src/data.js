@@ -1,6 +1,8 @@
 import {getRandomElem} from './components/utils';
 import {getRandomBoolean} from './components/utils';
 // import {getRandomNumber} from './components/utils';
+// import {getTripEventCard} from './components/trip-event-card';
+
 
 const OFFER_COUNT = 2;
 const DESCRIPTION_COUNT = 3;
@@ -60,14 +62,50 @@ export const cityList = [
   `Helsinki`,
 ];
 
+export const timeCalc = (seconds) => {
+  let diff; // остаток от деления
+
+  let days = seconds / 86400; // количество дней
+
+  diff = seconds %= 86400;
+
+  let hours = diff / 3600; // количество часов
+
+  diff = seconds %= 3600;
+
+  let mins = diff / 60;
+
+  days = +Math.trunc(days).toString().padStart(2, `0`);
+  hours = +Math.trunc(hours).toString().padStart(2, `0`);
+  mins = +Math.trunc(mins).toString().padStart(2, `0`);
+
+  if (days) {
+    return `${days}D ${hours}H ${mins}M`;
+  }
+
+  if (!days && hours) {
+    return `${hours}H ${mins}M`;
+  }
+
+  return `${mins}M`;
+
+  // return {
+  //   days: Math.trunc(days).toString().padStart(2, `0`),
+  //   hours: Math.trunc(hours).toString().padStart(2, `0`),
+  //   mins: Math.trunc(mins).toString().padStart(2, `0`),
+  //   sec: Math.trunc(sec).toString().padStart(2, `0`),
+  // };
+};
+
 export const getMockData = () => ({
   title: getRandomElem(titles),
   desctiption: splitText(sentence, DESCRIPTION_COUNT),
   city: getRandomElem(cityList),
   schedule: {
     start: Date.now() + (Math.random() * 5) * 24 * 60 * 60 * 1000,
-    duration: (Math.random() * 1) * 24 * 60 * 60 * 1000
+    duration: (Math.random() * 2) * 24 * 60 * 60 * 1000,
   },
+
   eventPrice: getRandomElem(priceList),
   // offer: getRandomElem(priceType),
   offer: randomOffer(priceType, OFFER_COUNT),
@@ -76,7 +114,7 @@ export const getMockData = () => ({
   get getTitle() {
     switch (this.icon) {
       case `taxi`:
-        return `Taxi to`;
+        return `taxi`;
       case `bus`:
         return `Bus to`;
       case `train`:
@@ -104,7 +142,7 @@ export const getMockData = () => ({
   },
 });
 
-// export const eventCards = new Array(3).fill(``).map(() => getMockData()); console.log('eventCards', eventCards);
+// export const eventCards = new Array(3).fill(``).map(() => getMockData());
 
 
 export const menu = [
@@ -119,4 +157,12 @@ export const filters = [
   {name: `Past`, isChecked: false},
 ];
 
-// export const filters = new Set([`Everything`, `Future`, `Past`]);
+
+export const getEventArray = (count) => {
+  let arr = [];
+  for (let i = 0; i < count; i++) {
+    arr.push(getMockData());
+  }
+  return arr;
+};
+
