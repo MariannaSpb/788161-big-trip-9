@@ -1,7 +1,6 @@
 import {filters} from '../data';
 
 
-// создаем один фильтр
 export const getFilter = (filtersArray) => {
   return filtersArray.map((filterItem) => `
     <div class="trip-filters__filter">
@@ -10,7 +9,6 @@ export const getFilter = (filtersArray) => {
     </div>`.trim());
 };
 
-// создаем контейнер с др фильтрами
 export const getFilters = () => {
   return `
   <form class="trip-filters" action="#" method="get">

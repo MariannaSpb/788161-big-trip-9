@@ -1,10 +1,8 @@
-import {timeCalc, getEventArray} from '../data';
+import {timeCalc, events} from '../data';
 import {createOffer} from './offer';
 
-const CARD_COUNT = 3;
-// const events = getEventArray(CARD_COUNT);
 export const getTripEventCard = () => {
-  return getEventArray(CARD_COUNT).map((item) => {
+  return events.map((item) => {
     return `<li class="trip-events__item">
     <div class="event">
       <div class="event__type">
@@ -14,9 +12,9 @@ export const getTripEventCard = () => {
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime=""2019-03-18T10:30"">${new Date(item.schedule.start).toLocaleTimeString()}</time>
+          <time class="event__start-time" datetime=""2019-03-18T10:30"">${new Date(item.schedule.start).toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`})}</time>
           —
-          <time class="event__end-time" datetime=""2019-03-18T10:30"">${new Date(item.schedule.start + item.schedule.duration).toLocaleTimeString()}</time>
+          <time class="event__end-time" datetime=""2019-03-18T10:30"">${new Date(item.schedule.start + item.schedule.duration).toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`})}</time>
         </p>
         <p class="event__duration">${timeCalc(item.schedule.duration / 1000)}</p>
       </div>

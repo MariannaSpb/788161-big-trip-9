@@ -3,9 +3,7 @@ import {getMenu} from './components/menu';
 import {getFilters} from './components/filters';
 import {getSort} from './components/sort';
 import {getTravelPlan} from './components/trip-days';
-// import {totalPrice} from './components/trip-event-card';
-// import {getEventArray} from './data';
-// import {events} from './components/trip-event-card';
+import {events} from './data';
 
 const mainInfoContainer = document.querySelector(`.trip-info`);
 const controlsContainer = document.querySelector(`.trip-controls`);
@@ -22,6 +20,13 @@ renderComponents(getSort(), tripEvents, `beforeend`);
 renderComponents(getTravelPlan(), tripEvents, `beforeend`);
 
 
-// const totalPrice = getEventArray(CARD_COUNT).reduce((item, result) =>item + result.eventPrice, 0);
+const totalPrice = () => {
+  return events.reduce((result, item) => {
+    return result + item.eventPrice + [...item.offer].reduce((sum, element) => {
+      return sum + element.price;
+    }, 0);
+  }, 0);
+};
 
-// document.querySelector(`.trip-info__cost-value`).innerText = totalPrice;
+document.querySelector(`.trip-info__cost-value`).innerText = totalPrice();
+document.querySelector(`#event-price-1`).value = totalPrice();

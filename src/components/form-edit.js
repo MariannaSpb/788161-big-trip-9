@@ -1,13 +1,14 @@
-import {getMockData} from '../data';
+import {events, cityList} from '../data';
+import {formatDate} from './utils';
 
-export const getEventEditeForm = ({icon, city, desctiption, picture, getTitle} = getMockData()) => {
+export const getEventEditeForm = () => {
   return `<li class="trip-events__item">
   <form class="event  event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${icon}.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${events[0].icon}.png" alt="Event type icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -74,13 +75,12 @@ export const getEventEditeForm = ({icon, city, desctiption, picture, getTitle} =
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-        ${getTitle}
+        ${events[0].getTitle}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${city} list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${events[0].city} list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="${city}"></option>
-          <option value="${city}"></option>
-          <option value="${city}"></option>
+          ${cityList.map((city) => `<option value="${city}"></option>
+            `).join(``)}
         </datalist>
       </div>
 
@@ -88,12 +88,12 @@ export const getEventEditeForm = ({icon, city, desctiption, picture, getTitle} =
         <label class="visually-hidden" for="event-start-time-1">
           From
         </label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value='${formatDate(events[0].schedule.date) + ` ` + new Date(events[0].schedule.start).toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`})}'>
         —
         <label class="visually-hidden" for="event-end-time-1">
           To
         </label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value='${formatDate(events[0].schedule.date) + ` ` + new Date(events[0].schedule.start + events[0].schedule.duration).toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`})}'>
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -101,7 +101,7 @@ export const getEventEditeForm = ({icon, city, desctiption, picture, getTitle} =
           <span class="visually-hidden">Price</span>
           €
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="160">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -175,15 +175,13 @@ export const getEventEditeForm = ({icon, city, desctiption, picture, getTitle} =
 
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${desctiption}</p>
+        <p class="event__destination-description">${events[0].desctiption}</p>
 
         <div class="event__photos-container">
           <div class="event__photos-tape">
-            <img class="event__photo" src=${picture()} alt="Event photo">
-            <img class="event__photo" src=${picture()} alt="Event photo">
-            <img class="event__photo" src=${picture()} alt="Event photo">
-            <img class="event__photo" src=${picture()} alt="Event photo">
-            <img class="event__photo" src=${picture()} alt="Event photo">
+  ${events[0].picture(5).map((item) => {
+    return `<img class="event__photo" src=${item} alt="Event photo">`;
+  })}
           </div>
         </div>
       </section>
@@ -191,3 +189,5 @@ export const getEventEditeForm = ({icon, city, desctiption, picture, getTitle} =
   </form>
 </li>`;
 };
+
+

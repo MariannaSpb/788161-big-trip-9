@@ -1,12 +1,9 @@
 import {getRandomElem} from './components/utils';
 import {getRandomBoolean} from './components/utils';
-// import {getRandomNumber} from './components/utils';
-// import {getTripEventCard} from './components/trip-event-card';
-
 
 const OFFER_COUNT = 2;
 const DESCRIPTION_COUNT = 3;
-
+const CARD_COUNT = 3;
 
 const sentence = `orem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 
@@ -15,6 +12,7 @@ const randomOffer = (offers, count) => {
   const randomElem = Math.floor(Math.random() * offers.length);
   return offers.slice(randomElem, randomElem + count);
 };
+
 
 export const randomCity = (cityArr, count) => {
   const randomElem = Math.floor(Math.random() * cityArr.length);
@@ -28,7 +26,6 @@ const priceType = [
   {type: `Add meal`, price: 2, isAdded: true},
   {type: `Choose seats`, price: 9, isAdded: true}
 ];
-
 
 const splitText = (str, count) => {
   const text = str.split(`.`);
@@ -88,13 +85,6 @@ export const timeCalc = (seconds) => {
   }
 
   return `${mins}M`;
-
-  // return {
-  //   days: Math.trunc(days).toString().padStart(2, `0`),
-  //   hours: Math.trunc(hours).toString().padStart(2, `0`),
-  //   mins: Math.trunc(mins).toString().padStart(2, `0`),
-  //   sec: Math.trunc(sec).toString().padStart(2, `0`),
-  // };
 };
 
 export const getMockData = () => ({
@@ -104,10 +94,9 @@ export const getMockData = () => ({
   schedule: {
     start: Date.now() + (Math.random() * 5) * 24 * 60 * 60 * 1000,
     duration: (Math.random() * 2) * 24 * 60 * 60 * 1000,
+    date: Date.now(),
   },
-
   eventPrice: getRandomElem(priceList),
-  // offer: getRandomElem(priceType),
   offer: randomOffer(priceType, OFFER_COUNT),
   icon: getRandomElem(eventType),
   isFavorite: getRandomBoolean(),
@@ -137,12 +126,14 @@ export const getMockData = () => ({
         return ``;
     }
   },
-  picture() {
-    return `http://picsum.photos/300/150?r=${Math.random()}`;
+  picture(count) {
+    let arr = [];
+    for (let i = 0; i < count; i++) {
+      arr.push(`http://picsum.photos/300/150?r=${Math.random()}`);
+    }
+    return arr;
   },
 });
-
-// export const eventCards = new Array(3).fill(``).map(() => getMockData());
 
 
 export const menu = [
@@ -158,7 +149,7 @@ export const filters = [
 ];
 
 
-export const getEventArray = (count) => {
+const getEventArray = (count) => {
   let arr = [];
   for (let i = 0; i < count; i++) {
     arr.push(getMockData());
@@ -166,3 +157,4 @@ export const getEventArray = (count) => {
   return arr;
 };
 
+export const events = getEventArray(CARD_COUNT).sort((a, b) => a.schedule.start - b.schedule.start);
