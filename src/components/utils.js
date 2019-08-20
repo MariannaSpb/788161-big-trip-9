@@ -24,6 +24,5 @@ export const formatDate = (date) => {
       .slice(-2)
   ];
 
-console.log(day)
   return `${day.join(`/`)}`;
 };

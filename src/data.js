@@ -149,7 +149,7 @@ export const filters = [
 ];
 
 
-const getEventArray = (count) => {
+export const getEventArray = (count) => {
   let arr = [];
   for (let i = 0; i < count; i++) {
     arr.push(getMockData());
@@ -158,3 +158,5 @@ const getEventArray = (count) => {
 };
 
 export const events = getEventArray(CARD_COUNT).sort((a, b) => a.schedule.start - b.schedule.start);
+
+
