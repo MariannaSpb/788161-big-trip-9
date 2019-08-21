@@ -150,13 +150,14 @@ export const filters = [
 
 
 export const getEventArray = (count) => {
-  let arr = [];
+  let events = [];
   for (let i = 0; i < count; i++) {
-    arr.push(getMockData());
+    events.push(getMockData());
   }
-  return arr;
+  return events;
 };
 
+console.log(`getEventArray`, getEventArray(3));
 export const events = getEventArray(CARD_COUNT).sort((a, b) => a.schedule.start - b.schedule.start);
 
 

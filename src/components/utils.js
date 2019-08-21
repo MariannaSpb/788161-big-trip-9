@@ -26,3 +26,21 @@ export const formatDate = (date) => {
 
   return `${day.join(`/`)}`;
 };
+
+
+export const formatDayMonth = (date) => {
+  date = new Date(date);
+  return `${new Date(date).toLocaleDateString(`en-US`, {day: `2-digit`, month: `short`})}`;
+};
+
+export const formatDayMonthShort = (date) => {
+  date = new Date(date);
+  return `${new Date(date).toLocaleDateString(`en-US`, {day: `2-digit`})}`;
+};
+
+export const formatTime = (time) => {
+  time = new Date(time);
+  return `${new Date(time).toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`})}`;
+};
+
+

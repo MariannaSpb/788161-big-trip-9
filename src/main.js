@@ -4,7 +4,9 @@ import {getFilters} from './components/filters';
 import {getSort} from './components/sort';
 import {getTravelPlan} from './components/trip-days';
 import {events} from './data';
+// const CARD_COUNT = 3;
 
+// const events = getEventArray(CARD_COUNT).sort((a, b) => a.schedule.start - b.schedule.start);
 const mainInfoContainer = document.querySelector(`.trip-info`);
 const controlsContainer = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
