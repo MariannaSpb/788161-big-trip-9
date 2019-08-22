@@ -1,9 +1,10 @@
 import {getRandomElem} from './components/utils';
 import {getRandomBoolean} from './components/utils';
+import {getTripEventCard} from './components/trip-event-card';
+import {getEventEditeForm} from './components/form-edit';
 
 const OFFER_COUNT = 2;
 const DESCRIPTION_COUNT = 3;
-const CARD_COUNT = 3;
 
 const sentence = `orem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 
@@ -89,10 +90,10 @@ export const timeCalc = (seconds) => {
 
 export const getMockData = () => ({
   title: getRandomElem(titles),
-  desctiption: splitText(sentence, DESCRIPTION_COUNT),
+  description: splitText(sentence, DESCRIPTION_COUNT),
   city: getRandomElem(cityList),
   schedule: {
-    start: Date.now() + (Math.random() * 5) * 24 * 60 * 60 * 1000,
+    start: Date.now() + (Math.random() * 7) * 24 * 60 * 60 * 1000,
     duration: (Math.random() * 2) * 24 * 60 * 60 * 1000,
     date: Date.now(),
   },
@@ -149,15 +150,42 @@ export const filters = [
 ];
 
 
-export const getEventArray = (count) => {
-  let events = [];
+// export const getEventArray = (count) => {
+//   let events = [];
+//   for (let i = 0; i < count; i++) {
+//     events.push(getMockData());
+//   }
+//   return events;
+// };
+
+// console.log(`getEventArray`, getEventArray(3));
+
+// export const events = getEventArray(CARD_COUNT).sort((a, b) => a.schedule.start - b.schedule.start);
+
+const CARD_COUNT = 3;
+// массив объектов
+export const events = new Array(CARD_COUNT).fill(``).map(getMockData).sort((a, b) => a.schedule.start - b.schedule.start);
+
+
+export const getPoints = (count) => {
+  let points = [];
+
   for (let i = 0; i < count; i++) {
-    events.push(getMockData());
+    points.push(getTripEventCard(events[i]));
   }
-  return events;
+  return points;
 };
 
-console.log(`getEventArray`, getEventArray(3));
-export const events = getEventArray(CARD_COUNT).sort((a, b) => a.schedule.start - b.schedule.start);
+export const getForms = (count) => {
+  let forms = [];
 
+  for (let i = 0; i < count; i++) {
+    forms.push(getEventEditeForm(events[i]));
+  }
+
+  return forms;
+};
+
+export const points = getPoints(3); // массив из трёх ивентов с версткой
+export const forms = getForms(1);
 
