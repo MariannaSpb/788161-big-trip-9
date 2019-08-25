@@ -1,7 +1,16 @@
 import {cityList} from '../data';
 import {formatDate, formatTime} from './utils';
+// import {totalPrice} from '../main';
 
-export const getEventEditeForm = ({icon, city, description, getTitle, picture, schedule: {start, duration}}) => {
+const calculatePrice = (price, offer) => {
+  let costs = offer.filter((offerItem) => offerItem.isAdded).map((it) => it.price);
+  for (let cost of costs) {
+    price += cost;
+  }
+  return price;
+};
+
+export const getEventEditeForm = ({icon, city, eventPrice, offer, description, getTitle, picture, schedule: {start, duration}}) => {
   return `<li class="trip-events__item">
     <form class="event  event--edit" action="#" method="post">
       <header class="event__header">
@@ -101,7 +110,7 @@ export const getEventEditeForm = ({icon, city, description, getTitle, picture, s
             <span class="visually-hidden">Price</span>
             €
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${calculatePrice(eventPrice, offer)}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>

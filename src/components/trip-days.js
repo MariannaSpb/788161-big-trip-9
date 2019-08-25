@@ -1,10 +1,10 @@
 import {getTripDay} from './trip-day';
-import {events} from '../data';
 
 
-export const getTravelPlan = () => {
+
+export const getTravelPlan = (obj) => {
   return `
     <ul class="trip-days">
-      ${getTripDay(3, events).join(``)}
+      ${getTripDay(3, obj).join(``)}
     </ul>`;
 };

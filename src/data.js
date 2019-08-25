@@ -1,3 +1,4 @@
+import {events} from './main';
 import {getRandomElem} from './components/utils';
 import {getRandomBoolean} from './components/utils';
 import {getTripEventCard} from './components/trip-event-card';
@@ -160,32 +161,5 @@ export const filters = [
 
 // console.log(`getEventArray`, getEventArray(3));
 
-// export const events = getEventArray(CARD_COUNT).sort((a, b) => a.schedule.start - b.schedule.start);
 
-const CARD_COUNT = 3;
-// массив объектов
-export const events = new Array(CARD_COUNT).fill(``).map(getMockData).sort((a, b) => a.schedule.start - b.schedule.start);
-
-
-export const getPoints = (count) => {
-  let points = [];
-
-  for (let i = 0; i < count; i++) {
-    points.push(getTripEventCard(events[i]));
-  }
-  return points;
-};
-
-export const getForms = (count) => {
-  let forms = [];
-
-  for (let i = 0; i < count; i++) {
-    forms.push(getEventEditeForm(events[i]));
-  }
-
-  return forms;
-};
-
-export const points = getPoints(3); // массив из трёх ивентов с версткой
-export const forms = getForms(1);
 
