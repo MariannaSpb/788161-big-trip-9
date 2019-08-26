@@ -89,6 +89,7 @@ export const timeCalc = (seconds) => {
   return `${mins}M`;
 };
 
+
 export const getMockData = () => ({
   title: getRandomElem(titles),
   description: splitText(sentence, DESCRIPTION_COUNT),
@@ -97,6 +98,7 @@ export const getMockData = () => ({
     start: Date.now() + (Math.random() * 7) * 24 * 60 * 60 * 1000,
     duration: (Math.random() * 2) * 24 * 60 * 60 * 1000,
     date: Date.now(),
+
   },
   eventPrice: getRandomElem(priceList),
   offer: randomOffer(priceType, OFFER_COUNT),

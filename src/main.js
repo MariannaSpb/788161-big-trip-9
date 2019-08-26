@@ -2,12 +2,12 @@ import {getInfoTrip} from './components/trip-Info';
 import {getMenu} from './components/menu';
 import {getFilters} from './components/filters';
 import {getSort} from './components/sort';
-import {getMockData} from './data';
-import {getTravelPlan} from './components/trip-days';
+import {getMockData, cityList} from './data';
+import {getTravelPlan} from './components/trip-day';
 import {getTripEventCard} from './components/trip-event-card';
 import {getEventEditeForm} from './components/form-edit';
 
-const CARD_COUNT = 3;
+const CARD_COUNT = 4;
 const mainInfoContainer = document.querySelector(`.trip-info`);
 const controlsContainer = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
@@ -19,28 +19,10 @@ const renderComponents = (getComponents, container, place) => {
 // массив объектов
 export const events = new Array(CARD_COUNT).fill(``).map(getMockData).sort((a, b) => a.schedule.start - b.schedule.start);
 
-export const getPoints = (count) => {
-  let points = [];
 
-  for (let i = 0; i < count; i++) {
-    points.push(getTripEventCard(events[i]));
-  }
-  return points;
-};
 
-export const getForms = (count) => {
-  let forms = [];
 
-  for (let i = 0; i < count; i++) {
-    forms.push(getEventEditeForm(events[i]));
-  }
-
-  return forms;
-};
-
-export const points = getPoints(3); // массив из трёх ивентов с версткой
-export const forms = getForms(1);
-
+console.log(`dates2`, new Date(events[0].schedule.start).toDateString());
 
 // export const totalPrice = () => {
 //   return events.reduce((result, item) => {
@@ -53,7 +35,7 @@ export const forms = getForms(1);
 // };
 
 const siteTotalCostElement = document.querySelector(`.trip-info__cost-value`);
-const totalPrice = (cards, element) => {
+const totalPrice = (cards) => {
   let cost = 0;
   for (let card of cards) {
     cost += card.eventPrice;
@@ -61,9 +43,14 @@ const totalPrice = (cards, element) => {
       cost += item.price;
     });
   }
-  element.textContent = cost;
+  return cost;
 };
-totalPrice(events, siteTotalCostElement);
+const checkTypeofPrice = (num) => {
+  if (typeof (num) === `number`) {
+    siteTotalCostElement.textContent = num;
+  }
+};
+
 
 const cities = events.reduce((result, item) => result.concat(item.city), []);
 const dates = events.reduce((result, item) => result.concat(item.schedule.start), []);
@@ -73,5 +60,4 @@ renderComponents(getMenu(), controlsContainer, `afterbegin`);
 renderComponents(getFilters(), controlsContainer, `beforeend`);
 renderComponents(getSort(), tripEvents, `beforeend`);
 renderComponents(getTravelPlan(events), tripEvents, `beforeend`);
-
-
+checkTypeofPrice(totalPrice(events));

@@ -1,6 +1,7 @@
 import {cityList} from '../data';
 import {formatDate, formatTime} from './utils';
 // import {totalPrice} from '../main';
+import {timeCalc} from '../data';
 
 const calculatePrice = (price, offer) => {
   let costs = offer.filter((offerItem) => offerItem.isAdded).map((it) => it.price);

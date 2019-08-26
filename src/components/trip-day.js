@@ -1,28 +1,28 @@
-import {forms, points} from '../main';
-// import {getRandomElem} from './utils';
 import {formatDayMonth} from './utils';
 
 
-// const renderForm = (forms, count) => {
-//   const randomElem = Math.floor(Math.random() * forms.length);
-//   return forms.slice(randomElem, randomElem + count);
-// };
+import {getTripEventCard} from "./trip-event-card";
+import {getEventEditeForm} from "./form-edit";
 
-export const getTripDay = (count, obj) => {
-  const days = [];
-  for (let i = 0; i < count; i++) {
-    days.push(`
-      <li class="trip-days__item  day">
-        <div class="day__info">
-          <span class="day__counter">${i + 1}</span>
-          <time class="day__date" datetime="2019-03-18">${formatDayMonth(obj[i].schedule.start)}</time>
-        </div>
-        <ul class="trip-events__list">
-        ${i === 0 ? forms.join(``) : ``}
-        ${points.join(``)}
-        </ul>`);
-  }
-  return days;
+const getDates = (eventsArray) => {
+  let dates = new Set();
+  eventsArray.sort((a, b) => a.schedule.start - b.schedule.start).map((item) => dates.add(new Date(item.schedule.start).toDateString()));
+  return dates;
 };
 
-//  ${points.join(``)}
+export const getTravelPlan = (eventsArray) => `<ul class="trip-days">
+      ${Array.from(getDates(eventsArray)).map((date, index) =>`<li class="trip-days__item  day">
+              <div class="day__info">
+                <span class="day__counter">${index + 1}</span>
+                 <time class="day__date" datetime="${formatDayMonth(date).slice(0, 10)}">${date.slice(4, 10)}</time>
+              </div>
+              <ul class="trip-events__list">
+                 ${new Date(eventsArray[0].schedule.start).toDateString() === date ? getEventEditeForm(eventsArray[0]) : `` }
+                 ${eventsArray.slice(1).filter((item) => new Date(item.schedule.start).toDateString() === date).map(getTripEventCard).join(``)}
+              </ul>
+            </li>
+                `).join(``)}
+        </ul>`.trim();
+
+
+
