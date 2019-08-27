@@ -14,17 +14,7 @@ export const getRandomNumber = (max) => {
 
 export const formatDate = (date) => {
   date = new Date(date);
-
-  const day = [
-    date.getDate(),
-    `0${date.getMonth() + 1}`,
-    date
-      .getFullYear()
-      .toString()
-      .slice(-2)
-  ];
-
-  return `${day.join(`/`)}`;
+  return `${new Date(date).toLocaleDateString(`en-GB`, {year: `2-digit`, day: `2-digit`, month: `2-digit`})}`;
 };
 
 

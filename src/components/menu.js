@@ -1,4 +1,8 @@
-import {menu} from '../data';
+const menu = [
+  {name: `Table`, isAdded: true},
+  {name: `Stats`, isAdded: false}
+
+];
 
 export const getMenuItem = (arr) => {
   return arr.map((item) => `

@@ -1,8 +1,6 @@
-import {events} from './main';
 import {getRandomElem} from './components/utils';
 import {getRandomBoolean} from './components/utils';
-import {getTripEventCard} from './components/trip-event-card';
-import {getEventEditeForm} from './components/form-edit';
+
 
 const OFFER_COUNT = 2;
 const DESCRIPTION_COUNT = 3;
@@ -46,12 +44,6 @@ const priceList = [
 const eventType = [`bus`, `check-in`, `drive`, `flight`, `restaurant`, `ship`, `sightseeing`, `taxi`, `train`, `transport`, `trip`
 ];
 
-const titles = [
-  `Taxi to airport`,
-  `Flight to Geneva`,
-  `Drive to Chamonix`,
-  `Check into hotel`,
-];
 
 export const cityList = [
   `Saint-Petersburg`,
@@ -91,13 +83,11 @@ export const timeCalc = (seconds) => {
 
 
 export const getMockData = () => ({
-  title: getRandomElem(titles),
   description: splitText(sentence, DESCRIPTION_COUNT),
   city: getRandomElem(cityList),
   schedule: {
     start: Date.now() + (Math.random() * 7) * 24 * 60 * 60 * 1000,
     duration: (Math.random() * 2) * 24 * 60 * 60 * 1000,
-    date: Date.now(),
 
   },
   eventPrice: getRandomElem(priceList),
@@ -138,30 +128,4 @@ export const getMockData = () => ({
     return arr;
   },
 });
-
-
-export const menu = [
-  {name: `Table`, isAdded: true},
-  {name: `Stats`, isAdded: false}
-
-];
-
-export const filters = [
-  {name: `Everything`, isChecked: true},
-  {name: `Future`, isChecked: false},
-  {name: `Past`, isChecked: false},
-];
-
-
-// export const getEventArray = (count) => {
-//   let events = [];
-//   for (let i = 0; i < count; i++) {
-//     events.push(getMockData());
-//   }
-//   return events;
-// };
-
-// console.log(`getEventArray`, getEventArray(3));
-
-
 

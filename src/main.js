@@ -15,14 +15,11 @@ const renderComponents = (getComponents, container, place) => {
   container.insertAdjacentHTML(place, getComponents);
 };
 
-export const events = new Array(CARD_COUNT).fill(``).map(getMockData).sort((a, b) => a.schedule.start - b.schedule.start);
-
+const events = new Array(CARD_COUNT).fill(``).map(getMockData).sort((a, b) => a.schedule.start - b.schedule.start);
 
 export const totalPrice = (cards) => {
   return cards.reduce((result, item) => {
-    // console.log(`item`, item) // один объект данных
     return result + item.eventPrice + [...item.offer].reduce((sum, element) => {
-      // console.log(`element`, element) // один объект priceType
       return sum + element.price;
     }, 0);
   }, 0);
@@ -36,11 +33,8 @@ const checkTypeofPrice = (num) => {
 };
 
 
-// const cities = events.reduce((result, item) => result.concat(item.city), []);
-// const dates = events.reduce((result, item) => result.concat(item.schedule.start), []);
-
-const getInfo = () => {
-  return events.reduce(
+const getInfo = (array) => {
+  return array.reduce(
       (result, item) => {
         result.cities.push(item.city);
         result.dates.push(item.schedule.start);
@@ -49,12 +43,10 @@ const getInfo = () => {
       {cities: [], dates: []}
   );
 };
-console.log(`data`, getInfo());
-const objOfArrays = getInfo();
 
+const infoArrays = getInfo(events);
 
-// renderComponents(getInfoTrip(cities, dates), mainInfoContainer, `afterbegin`);
-renderComponents(getInfoTrip(objOfArrays.cities, objOfArrays.dates), mainInfoContainer, `afterbegin`);
+renderComponents(getInfoTrip(infoArrays.cities, infoArrays.dates), mainInfoContainer, `afterbegin`);
 
 renderComponents(getMenu(), controlsContainer, `afterbegin`);
 renderComponents(getFilters(), controlsContainer, `beforeend`);

@@ -1,4 +1,8 @@
-import {filters} from '../data';
+const filters = [
+  {name: `Everything`, isChecked: true},
+  {name: `Future`, isChecked: false},
+  {name: `Past`, isChecked: false},
+];
 
 
 export const getFilter = (filtersArray) => {

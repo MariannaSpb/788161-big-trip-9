@@ -1,5 +1,6 @@
 import {timeCalc} from '../data';
 import {createOffer} from './offer';
+import {formatTime} from './utils';
 
 export const getTripEventCard = ({icon, city, eventPrice, getTitle, offer, schedule: {start, duration}}) => {
   return `<li class="trip-events__item">
@@ -11,9 +12,9 @@ export const getTripEventCard = ({icon, city, eventPrice, getTitle, offer, sched
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime=""2019-03-18T10:30"">${new Date(start).toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`})}</time>
+          <time class="event__start-time" datetime=""2019-03-18T10:30"">${formatTime(start)}</time>
           —
-          <time class="event__end-time" datetime=""2019-03-18T10:30"">${new Date(start + duration).toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`})}</time>
+          <time class="event__end-time" datetime=""2019-03-18T10:30"">${formatTime(start + duration)}</time>
         </p>
         <p class="event__duration">${timeCalc(duration / 1000)}</p>
       </div>

@@ -1,6 +1,4 @@
 import {formatDayMonth} from './utils';
-
-
 import {getTripEventCard} from "./trip-event-card";
 import {getEventEditeForm} from "./form-edit";
 
@@ -23,6 +21,4 @@ export const getTravelPlan = (eventsArray) => `<ul class="trip-days">
             </li>
                 `).join(``)}
         </ul>`.trim();
-
-
 
