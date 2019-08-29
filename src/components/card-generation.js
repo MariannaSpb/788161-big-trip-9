@@ -7,3 +7,5 @@ export const generationCard = (count) => {
   }
   return cardArray.join(` `);
 };
+
+

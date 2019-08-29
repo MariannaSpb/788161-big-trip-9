@@ -1,20 +1,22 @@
-export const getFilters = () => {
-  return `<form class="trip-filters" action="#" method="get">
-  <div class="trip-filters__filter">
-    <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked="">
-    <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
-  </div>
+const filters = [
+  {name: `Everything`, isChecked: true},
+  {name: `Future`, isChecked: false},
+  {name: `Past`, isChecked: false},
+];
 
-  <div class="trip-filters__filter">
-    <input id="filter-future" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="future">
-    <label class="trip-filters__filter-label" for="filter-future">Future</label>
-  </div>
 
-  <div class="trip-filters__filter">
-    <input id="filter-past" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="past">
-    <label class="trip-filters__filter-label" for="filter-past">Past</label>
-  </div>
-
-  <button class="visually-hidden" type="submit">Accept filter</button>
-</form>`;
+export const getFilter = (filtersArray) => {
+  return filtersArray.map((filterItem) => `
+    <div class="trip-filters__filter">
+        <input id="filter-${filterItem.name.toLowerCase()}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${filterItem.name.toLowerCase()}" ${filterItem.isChecked ? `checked` : ``}>
+        <label class="trip-filters__filter-label" for="filter-${filterItem.name.toLowerCase()}">${filterItem.name}</label>
+    </div>`.trim());
 };
+
+export const getFilters = () => {
+  return `
+  <form class="trip-filters" action="#" method="get">
+    ${getFilter(filters).join(``)}
+  </form>`.trim();
+};
+
