@@ -124,3 +124,4 @@ renderDay(events);
 
 const eventContainer = document.querySelector(`.trip-events__list`);
 events.forEach((mock) => renderEvent(mock));
+// console.log(``)
