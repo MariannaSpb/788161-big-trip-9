@@ -1,9 +1,24 @@
-import {formatDayMonth, formatDayMonthShort} from './utils';
+import {formatDayMonth, formatDayMonthShort, createElement} from './utils';
 
-export const getInfoTrip = (cities, dates) => {
-  return `<div class="trip-info__main">
-    <h1 class="trip-info__title">${cities.length > 2 ? `${cities[0]} — ... — ${cities[cities.length - 1]}` : `${cities.join(`—`)}`}</h1>
-    <p class="trip-info__dates">${dates.length > 2 ? `${formatDayMonth(dates[0])} — ${formatDayMonthShort(dates[dates.length - 1])}` : `${dates.join(`—`)}
+
+export class Info {
+  constructor(cities, dates) {
+    this._cities = cities;
+    this._dates = dates;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  getTemplate() {
+    return `<div class="trip-info__main">
+    <h1 class="trip-info__title">${this._cities.length > 2 ? `${this._cities[0]} — ... — ${this._cities[this._cities.length - 1]}` : `${this._cities.join(`—`)}`}</h1>
+    <p class="trip-info__dates">${this._dates.length > 2 ? `${formatDayMonth(this._dates[0])} — ${formatDayMonthShort(this._dates[this._dates.length - 1])}` : `${this._dates.join(`—`)}
     `}</p>
   </div>`;
-};
+  }
+}

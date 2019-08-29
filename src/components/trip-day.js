@@ -1,24 +1,39 @@
-import {formatDayMonth} from './utils';
-import {getTripEventCard} from "./trip-event-card";
-import {getEventEditeForm} from "./form-edit";
+import {formatDayMonth, createElement} from './utils';
+
 
 const getDates = (eventsArray) => {
   let dates = new Set();
   eventsArray.sort((a, b) => a.schedule.start - b.schedule.start).map((item) => dates.add(new Date(item.schedule.start).toDateString()));
-  return dates;
+  const dateArray = Array.from(dates);
+  return dateArray;
+  // return dates;
 };
 
-export const getTravelPlan = (eventsArray) => `<ul class="trip-days">
-      ${Array.from(getDates(eventsArray)).map((date, index) =>`<li class="trip-days__item  day">
+
+export class Day {
+  constructor(eventsArray) {
+    this._eventsArray = eventsArray;
+    this._element = null;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  getTemplate() {
+    return getDates((this._eventsArray)).map((date, index) => `<li class="trip-days__item  day">
               <div class="day__info">
                 <span class="day__counter">${index + 1}</span>
                  <time class="day__date" datetime="${formatDayMonth(date).slice(0, 10)}">${date.slice(4, 10)}</time>
               </div>
               <ul class="trip-events__list">
-                 ${new Date(eventsArray[0].schedule.start).toDateString() === date ? getEventEditeForm(eventsArray[0]) : `` }
-                 ${eventsArray.slice(1).filter((item) => new Date(item.schedule.start).toDateString() === date).map(getTripEventCard).join(``)}
+
               </ul>
-            </li>
-                `).join(``)}
-        </ul>`.trim();
+            </li>`).join(``);
+  }
+}
 
