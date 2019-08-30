@@ -20,6 +20,9 @@ const siteTotalCostElement = document.querySelector(`.trip-info__cost-value`);
 
 const events = new Array(CARD_COUNT).fill(``).map(getMockData).sort((a, b) => a.schedule.start - b.schedule.start);
 
+events.map((item, index, array) => array.indexOf(item) === index ? (item.productId = index + 1) : item);
+
+
 export const totalPrice = (cards) => {
   return cards.reduce((result, item) => {
     return result + item.eventPrice + [...item.offer].reduce((sum, element) => {
@@ -111,8 +114,6 @@ const renderEventMessage = () => {
   const message = new EventMessage();
   render(tripEvents, message.getElement(), position.BEFOREEND);
 };
-
-
 
 renderSort();
 renderMenu(getMenu());
