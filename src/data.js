@@ -53,6 +53,11 @@ export const cityList = [
   `Helsinki`,
 ];
 
+const uniqueCity = (array) => {
+  let uniqueArrayCity = [...new Set(array)];
+  return uniqueArrayCity;
+};
+
 export const timeCalc = (seconds) => {
   let diff; // остаток от деления
 
@@ -81,10 +86,19 @@ export const timeCalc = (seconds) => {
   return `${mins}M`;
 };
 
+const idCount = [1, 2, 3, 4, 5];
+
+const uniqueId = (array) => {
+  let uniqueArrayId = [...new Set(array)]; // спред достаёт  все свойства из объекта и записывает  в массив
+  return uniqueArrayId;
+};
+
+const id = uniqueId(idCount);
+
 
 export const getMockData = () => ({
   description: splitText(sentence, DESCRIPTION_COUNT),
-  city: getRandomElem(cityList),
+  city: getRandomElem(uniqueCity(cityList)),
   schedule: {
     start: Date.now() + (Math.random() * 7) * 24 * 60 * 60 * 1000,
     duration: (Math.random() * 2) * 24 * 60 * 60 * 1000,
@@ -94,6 +108,7 @@ export const getMockData = () => ({
   offer: randomOffer(priceType, OFFER_COUNT),
   icon: getRandomElem(eventType),
   isFavorite: getRandomBoolean(),
+  productId: id.shift(),
   get getTitle() {
     switch (this.icon) {
       case `taxi`:
