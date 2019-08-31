@@ -8,6 +8,7 @@ import {getMockData} from './data';
 import {render, position} from './components/utils';
 import {Day} from './components/trip-day';
 import {TripDays} from './components/trip-days';
+import {EventMessage} from './components/event-message';
 
 
 const CARD_COUNT = 4;
@@ -18,6 +19,9 @@ const siteTotalCostElement = document.querySelector(`.trip-info__cost-value`);
 
 
 const events = new Array(CARD_COUNT).fill(``).map(getMockData).sort((a, b) => a.schedule.start - b.schedule.start);
+
+events.map((item, index, array) => array.indexOf(item) === index ? (item.productId = index + 1) : item);
+
 
 export const totalPrice = (cards) => {
   return cards.reduce((result, item) => {
@@ -50,7 +54,6 @@ const infoArrays = getInfo(events);
 
 const renderEvent = (mock) => {
   const event = new Event(mock);
-  const editForm = new EditEvent(mock);
   const onEscKeyDown = (evt) => {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       eventContainer.replaceChild(event.getElement(), editForm.getElement());
@@ -65,6 +68,7 @@ const renderEvent = (mock) => {
       document.addEventListener(`keydown`, onEscKeyDown);
     });
 
+  const editForm = new EditEvent(mock);
   editForm.getElement()
   .querySelector(`.event__rollup-btn`)
   .addEventListener(`click`, () => {
@@ -106,6 +110,10 @@ const renderDaysList = () => {
   render(tripEvents, tripDays.getElement(), position.BEFOREEND);
 };
 
+const renderEventMessage = () => {
+  const message = new EventMessage();
+  render(tripEvents, message.getElement(), position.BEFOREEND);
+};
 
 renderSort();
 renderMenu(getMenu());
@@ -113,6 +121,7 @@ renderFilters(getFilters());
 renderTripInfo();
 renderDaysList();
 checkTypeofPrice(totalPrice(events));
+renderEventMessage();
 
 const daysContainer = document.querySelector(`.trip-days`);
 const renderDay = (mock) => {
@@ -122,6 +131,10 @@ const renderDay = (mock) => {
 
 renderDay(events);
 
+if (!tripEvents.contains(daysContainer)) {
+  renderEventMessage();
+}
+
 const eventContainer = document.querySelector(`.trip-events__list`);
 events.forEach((mock) => renderEvent(mock));
-// console.log(``)
+

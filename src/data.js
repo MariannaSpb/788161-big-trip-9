@@ -108,7 +108,8 @@ export const getMockData = () => ({
   offer: randomOffer(priceType, OFFER_COUNT),
   icon: getRandomElem(eventType),
   isFavorite: getRandomBoolean(),
-  productId: id.shift(),
+  // productId: id.shift(),
+  productId: ``,
   get getTitle() {
     switch (this.icon) {
       case `taxi`:
