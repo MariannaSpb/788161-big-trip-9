@@ -1,18 +1,8 @@
-import {createElement} from './utils';
-// import {Day} from './trip-day';
+import {AbstractComponent} from './abstract';
 
-export class TripDays {
+export class TripDays extends AbstractComponent {
   constructor() {
-    this._element = null;
-    // this._day = new Day(eventsArray);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+    super();
   }
 
   getTemplate() {

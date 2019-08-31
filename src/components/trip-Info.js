@@ -1,17 +1,11 @@
-import {formatDayMonth, formatDayMonthShort, createElement} from './utils';
+import {formatDayMonth, formatDayMonthShort} from './utils';
+import {AbstractComponent} from './abstract';
 
-
-export class Info {
+export class Info extends AbstractComponent {
   constructor(cities, dates) {
+    super();
     this._cities = cities;
     this._dates = dates;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
   }
 
   getTemplate() {

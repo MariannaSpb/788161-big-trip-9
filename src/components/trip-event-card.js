@@ -1,9 +1,11 @@
 import {timeCalc} from '../data';
 import {createOffer} from './offer';
-import {formatTime, createElement} from './utils';
+import {formatTime} from './utils';
+import {AbstractComponent} from './abstract';
 
-export class Event {
+export class Event extends AbstractComponent {
   constructor({icon, getTitle, city, eventPrice, offer, schedule: {start, duration}}) {
+    super();
     this._icon = icon;
     this._getTitle = getTitle;
     this._city = city;
@@ -11,15 +13,8 @@ export class Event {
     this._duration = duration;
     this._eventPrice = eventPrice;
     this._offer = offer;
-    this._element = null;
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
 
   getTemplate() {
     return `<li class="trip-events__item">

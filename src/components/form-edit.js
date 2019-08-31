@@ -1,5 +1,6 @@
 import {cityList} from '../data';
-import {formatDate, formatTime, createElement} from './utils';
+import {formatDate, formatTime} from './utils';
+import {AbstractComponent} from './abstract';
 
 
 const calculatePrice = (price, offer) => {
@@ -10,8 +11,9 @@ const calculatePrice = (price, offer) => {
   return price;
 };
 
-export class EditEvent {
+export class EditEvent extends AbstractComponent {
   constructor({icon, getTitle, description, city, eventPrice, offer, picture, productId, schedule: {start, duration}}) {
+    super();
     this._icon = icon;
     this._getTitle = getTitle;
     this._description = description;
@@ -22,15 +24,8 @@ export class EditEvent {
     this._picture = picture;
     this._offer = offer;
     this._productId = productId;
-    this._element = null;
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
 
   getTemplate() {
     return `<li class="trip-events__item">
