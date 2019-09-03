@@ -1,7 +1,8 @@
 import {timeCalc} from '../data';
 import {createOffer} from './offer';
-import {formatTime} from './utils';
+// import {formatTime} from './utils';
 import {AbstractComponent} from './abstract';
+import moment from 'moment';
 
 export class Event extends AbstractComponent {
   constructor({icon, getTitle, city, eventPrice, offer, schedule: {start, duration}}) {
@@ -26,9 +27,9 @@ export class Event extends AbstractComponent {
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime=""2019-03-18T10:30"">${formatTime(this._start)}</time>
+          <time class="event__start-time" datetime=""2019-03-18T10:30"">${moment(this._start).format(`HH:mm`)}</time>
           —
-          <time class="event__end-time" datetime=""2019-03-18T10:30"">${formatTime(this._start + this._duration)}</time>
+          <time class="event__end-time" datetime=""2019-03-18T10:30"">${moment(this._start + this._duration).format(`HH:mm`)}</time>
         </p>
         <p class="event__duration">${timeCalc(this._duration / 1000)}</p>
       </div>

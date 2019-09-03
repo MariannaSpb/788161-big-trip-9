@@ -1,7 +1,7 @@
 import {cityList} from '../data';
-import {formatDate, formatTime} from './utils';
+// import {formatDate, formatTime} from './utils';
 import {AbstractComponent} from './abstract';
-
+import moment from 'moment';
 
 const calculatePrice = (price, offer) => {
   let costs = offer.filter((offerItem) => offerItem.isAdded).map((it) => it.price);
@@ -114,12 +114,12 @@ export class EditEvent extends AbstractComponent {
           <label class="visually-hidden" for="event-start-time-${this._productId}">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-${this._productId}" type="text" name="event-start-time" value='${formatDate(this._start) + ` ` + formatTime(this._start)}'>
+          <input class="event__input  event__input--time" id="event-start-time-${this._productId}" type="text" name="event-start-time" value='${moment(this._start).format(`DD/MM/YY HH:mm`)}'>
           —
           <label class="visually-hidden" for="event-end-time-${this._productId}">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-${this._productId}" type="text" name="event-end-time" value='${formatDate(this._start) + ` ` + formatTime(this._start + this._duration)}'>
+          <input class="event__input  event__input--time" id="event-end-time-${this._productId}" type="text" name="event-end-time" value='${moment(this._start + this._duration).format(`DD/MM/YY HH:mm`)}'>
         </div>
 
         <div class="event__field-group  event__field-group--price">

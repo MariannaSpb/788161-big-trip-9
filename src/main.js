@@ -18,7 +18,7 @@ const siteTotalCostElement = document.querySelector(`.trip-info__cost-value`);
 // events.map((item, index, array) => array.indexOf(item) === index ? (item.productId = index + 1) : item);
 // ========================
 
-const createEventsArray = (mockData, count) => {
+export const createEventsArray = (mockData, count) => {
   const eventsArray = [];
   for (let i = 0; i < count; i++) {
     eventsArray.push(mockData());
