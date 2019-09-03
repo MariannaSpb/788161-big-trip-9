@@ -1,7 +1,6 @@
 import {Info} from './components/trip-Info';
 import {Menu, getMenu} from './components/menu';
 import {Filter, getFilters} from './components/filters';
-import {Sort} from './components/sort';
 import {getMockData} from './data';
 import {render, position} from './components/utils';
 import {TripController} from './components/trip-controller';
@@ -76,12 +75,6 @@ const renderTripInfo = () => {
   render(mainInfoContainer, tripInfo.getElement(), position.AFTERBEGIN);
 };
 
-const renderSort = () => {
-  const sort = new Sort();
-  render(tripEvents, sort.getElement(), position.AFTERBEGIN);
-};
-
-renderSort();
 renderMenu(getMenu());
 renderFilters(getFilters());
 renderTripInfo();
