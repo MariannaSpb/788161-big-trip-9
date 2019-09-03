@@ -12,11 +12,6 @@ const controlsContainer = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
 const siteTotalCostElement = document.querySelector(`.trip-info__cost-value`);
 
-// ========================
-// const events = new Array(CARD_COUNT).fill(``).map(getMockData).sort((a, b) => a.schedule.start - b.schedule.start);
-
-// events.map((item, index, array) => array.indexOf(item) === index ? (item.productId = index + 1) : item);
-// ========================
 
 export const createEventsArray = (mockData, count) => {
   const eventsArray = [];

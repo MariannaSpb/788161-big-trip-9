@@ -1,7 +1,5 @@
 import {getRandomElem} from './components/utils';
 import {getRandomBoolean} from './components/utils';
-// import {createEventsArray} from './main';
-
 
 const OFFER_COUNT = 2;
 const DESCRIPTION_COUNT = 3;

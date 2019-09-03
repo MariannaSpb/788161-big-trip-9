@@ -1,5 +1,4 @@
 import {cityList} from '../data';
-// import {formatDate, formatTime} from './utils';
 import {AbstractComponent} from './abstract';
 import moment from 'moment';
 

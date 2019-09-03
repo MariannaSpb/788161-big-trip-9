@@ -1,6 +1,5 @@
 import {timeCalc} from '../data';
 import {createOffer} from './offer';
-// import {formatTime} from './utils';
 import {AbstractComponent} from './abstract';
 import moment from 'moment';
 
