@@ -86,15 +86,6 @@ export const timeCalc = (seconds) => {
   return `${mins}M`;
 };
 
-const idCount = [1, 2, 3, 4, 5];
-
-const uniqueId = (array) => {
-  let uniqueArrayId = [...new Set(array)]; // спред достаёт  все свойства из объекта и записывает  в массив
-  return uniqueArrayId;
-};
-
-const id = uniqueId(idCount);
-
 
 export const getMockData = () => ({
   description: splitText(sentence, DESCRIPTION_COUNT),
@@ -108,7 +99,6 @@ export const getMockData = () => ({
   offer: randomOffer(priceType, OFFER_COUNT),
   icon: getRandomElem(eventType),
   isFavorite: getRandomBoolean(),
-  // productId: id.shift(),
   productId: ``,
   get getTitle() {
     switch (this.icon) {

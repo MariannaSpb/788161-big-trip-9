@@ -1,16 +1,10 @@
-import {createElement} from './utils';
+import {AbstractComponent} from './abstract';
 
-export class Sort {
+export class Sort extends AbstractComponent {
   constructor() {
-    this._element = null;
+    super();
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
 
   getTemplate() {
     return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">

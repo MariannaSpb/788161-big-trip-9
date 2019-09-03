@@ -1,4 +1,4 @@
-import {createElement} from './utils';
+import {AbstractComponent} from './abstract';
 
 export const getMenu = () => ({
   menuList: [{
@@ -13,16 +13,10 @@ export const getMenu = () => ({
 });
 
 
-export class Menu {
+export class Menu extends AbstractComponent {
   constructor({menuList}) {
+    super();
     this._menuList = menuList;
-    this._element = null;
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
   }
 
   getTemplate() {
