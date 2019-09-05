@@ -31,7 +31,6 @@ export class TripController {
     render(this._container, this._tripDays.getElement(), position.BEFOREEND);
     render(this._tripDays.getElement(), this._day.getElement(), position.AFTERBEGIN);
 
-
     this._sort.getElement()
     .addEventListener(`click`, (evt) => this._onSortClick(evt));
 
@@ -48,6 +47,24 @@ export class TripController {
 
   }
 
+
+  _renderDayList() {
+    const cardEventsByDate = this._events.reduce((day, event) => {
+      if (day[event.schedule.start]) {
+        day[event.schedule.start].push(event);
+      } else {
+        day[event.schedule.start] = [event];
+      }
+      // return day;
+    }, {});
+    // Массив перечислений собственных свойств объекта с парами [key, value]
+    Object.entries(cardEventsByDate).forEach(([date, events]) => {
+      const sortedEvents = events.slice().sort((a, b) => a.schedule.start - b.schedule.start); // сделали массив отсортированным
+
+    });
+  }
+  // console.log(`day`, cardEventsByDate); // { date: [{event}]}
+
   _onSortClick(evt) {
 
     if (evt.target.tagName !== `LABEL`) {
@@ -55,17 +72,21 @@ export class TripController {
     }
 
     document.querySelector(`.trip-events__list`).innerHTML = ``;
+    document.querySelector(`#sort-day`).classList.add(`visually-hidden`);
+
+
 
     switch (evt.target.dataset.sortType) {
       case `time`:
-        const sortedByTime = this._events.slice().sort((a, b) => a.schedule.start - b.schedule.start);
+        const sortedByTime = this._events.slice().sort((a, b) => b.schedule.duration - a.schedule.duration);
         sortedByTime.forEach((mock) => this._renderEvent(mock));
         break;
       case `price`:
-        const sortedByPrice = this._events.slice().sort((a, b) => a.eventPrice - b.eventPrice);
+        const sortedByPrice = this._events.slice().sort((a, b) => b.eventPrice - a.eventPrice);
         sortedByPrice.forEach((mock) => this._renderEvent(mock));
         break;
       case `event`:
+        document.querySelector(`#sort-day`).classList.remove(`visually-hidden`);
         this._events.forEach((mock) => this._renderEvent(mock));
         break;
     }

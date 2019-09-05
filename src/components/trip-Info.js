@@ -1,6 +1,7 @@
 import {formatDayMonth, formatDayMonthShort} from './utils';
 import {AbstractComponent} from './abstract';
 
+
 export class Info extends AbstractComponent {
   constructor(cities, dates) {
     super();
@@ -16,3 +17,6 @@ export class Info extends AbstractComponent {
   </div>`;
   }
 }
+
+// moment(this._dates[0]).format("MMM D")
+// moment(this._dates[this._dates.length - 1]).format("D")

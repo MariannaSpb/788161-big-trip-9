@@ -6,7 +6,7 @@ import {render, position} from './components/utils';
 import {TripController} from './components/trip-controller';
 
 
-const CARD_COUNT = 4;
+const CARD_COUNT = 8;
 const mainInfoContainer = document.querySelector(`.trip-info`);
 const controlsContainer = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
