@@ -18,8 +18,13 @@ export const formatDate = (date) => {
 };
 
 
+// export const formatDayMonth = (date) => {
+//   date = new Date(date);
+//   return `${new Date(date).toLocaleDateString(`en-US`, {day: `2-digit`, month: `short`})}`;
+// };
+
 export const formatDayMonth = (date) => {
-  date = new Date(date);
+  date = new Date(parseInt(date, 10));
   return `${new Date(date).toLocaleDateString(`en-US`, {day: `2-digit`, month: `short`})}`;
 };
 

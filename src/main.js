@@ -25,7 +25,6 @@ export const createEventsArray = (mockData, count) => {
 };
 
 const events = createEventsArray(getMockData, CARD_COUNT);
-console.log(`djhfs`, formatDateCount(events[0].schedule.start));
 
 export const totalPrice = (cards) => {
   return cards.reduce((result, item) => {
