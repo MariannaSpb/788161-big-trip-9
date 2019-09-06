@@ -17,8 +17,7 @@ export class Event extends AbstractComponent {
 
 
   getTemplate() {
-    return `<li class="trip-events__item">
-    <div class="event">
+    return `<div class="event">
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${this._icon}.png" alt="Event type icon">
       </div>
@@ -45,8 +44,7 @@ export class Event extends AbstractComponent {
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
-    </div>
-  </li>`;
+    </div>`;
   }
 }
 

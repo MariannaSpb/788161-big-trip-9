@@ -2,11 +2,11 @@ import {Info} from './components/trip-Info';
 import {Menu, getMenu} from './components/menu';
 import {Filter, getFilters} from './components/filters';
 import {getMockData} from './data';
-import {render, position} from './components/utils';
+import {render, position, formatDateCount} from './components/utils';
 import {TripController} from './components/trip-controller';
 
 
-const CARD_COUNT = 8;
+const CARD_COUNT = 6;
 const mainInfoContainer = document.querySelector(`.trip-info`);
 const controlsContainer = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
@@ -25,7 +25,7 @@ export const createEventsArray = (mockData, count) => {
 };
 
 const events = createEventsArray(getMockData, CARD_COUNT);
-
+console.log(`djhfs`, formatDateCount(events[0].schedule.start));
 
 export const totalPrice = (cards) => {
   return cards.reduce((result, item) => {
