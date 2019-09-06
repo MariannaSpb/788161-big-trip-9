@@ -69,6 +69,10 @@ export class TripController {
     });
 
 
+  }
+
+
+
 
   _rendeEventList(events, dates) {
     const day = new Day(events, dates);

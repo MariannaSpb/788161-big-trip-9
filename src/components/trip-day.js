@@ -22,7 +22,6 @@ export class Day extends AbstractComponent {
 }
 
 
-
 // return `${this._dates.map((date, count) => `<li class="trip-days__item  day">
 // <div class="day__info">
 //   <span class="day__counter">${count + 1}</span>
