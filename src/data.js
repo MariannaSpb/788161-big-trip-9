@@ -2,7 +2,8 @@ import {getRandomElem} from './components/utils';
 import {getRandomBoolean} from './components/utils';
 
 const OFFER_COUNT = 2;
-const DESCRIPTION_COUNT = 3;
+// const DESCRIPTION_COUNT = 3;
+const PICTURE_COUNT = 3;
 
 const sentence = `orem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 
@@ -44,18 +45,31 @@ const eventType = [`bus`, `check-in`, `drive`, `flight`, `restaurant`, `ship`, `
 ];
 
 
-export const cityList = [
-  `Saint-Petersburg`,
-  `Moscow`,
-  `Vitebsk`,
-  `Barcelona`,
-  `Helsinki`,
-];
-
-const uniqueCity = (array) => {
-  let uniqueArrayCity = [...new Set(array)];
-  return uniqueArrayCity;
-};
+export const cities = [{
+  name: `Moscow`,
+  description: `Moscow is the major political, economic, cultural, and scientific center of Russia and Eastern Europe, as well as the largest city (both by population and by area) entirely on the European continent.`,
+  pictures: new Array(PICTURE_COUNT).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
+},
+{
+  name: `Helsinki`,
+  description: `Helsinki is the capital and most populous city of Finland. Located on the shore of the Gulf of Finland.`,
+  pictures: new Array(PICTURE_COUNT).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
+},
+{
+  name: `Barcelona`,
+  description: `Barcelona is the second largest city in Spain and the capital of Autonomous Community of Catalonia.`,
+  pictures: new Array(PICTURE_COUNT).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
+},
+{
+  name: `Vitebsk`,
+  description: `Vitebsk is one of the most ancient Slavonic cities, a major industrial hub, a city of developed industry, science and culture.`,
+  pictures: new Array(PICTURE_COUNT).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
+},
+{
+  name: `Saint-Petersburg`,
+  description: `Saint-Petersburg my lovely city.Situated on the Neva River, at the head of the Gulf of Finland on the Baltic Sea.`,
+  pictures: new Array(PICTURE_COUNT).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
+}];
 
 export const timeCalc = (seconds) => {
   let diff; // остаток от деления
@@ -87,8 +101,9 @@ export const timeCalc = (seconds) => {
 
 
 export const getMockData = () => ({
-  description: splitText(sentence, DESCRIPTION_COUNT),
-  city: getRandomElem(uniqueCity(cityList)),
+  city: cities[Math.floor(Math.random() * 5)],
+  // description: splitText(sentence, DESCRIPTION_COUNT),
+  // city: getRandomElem(uniqueCity(cityList)),
   schedule: {
     start: Date.now() + (Math.random() * 7) * 24 * 60 * 60 * 1000,
     duration: (Math.random() * 2) * 24 * 60 * 60 * 1000,
@@ -125,12 +140,12 @@ export const getMockData = () => ({
         return ``;
     }
   },
-  picture(count) {
-    let arr = [];
-    for (let i = 0; i < count; i++) {
-      arr.push(`http://picsum.photos/300/150?r=${Math.random()}`);
-    }
-    return arr;
-  },
+  // picture(count) {
+  //   let arr = [];
+  //   for (let i = 0; i < count; i++) {
+  //     arr.push(`http://picsum.photos/300/150?r=${Math.random()}`);
+  //   }
+  //   return arr;
+  // },
 });
 

@@ -8,7 +8,8 @@ export class Event extends AbstractComponent {
     super();
     this._icon = icon;
     this._getTitle = getTitle;
-    this._city = city;
+    // this._city = city;
+    this._city = city.name;
     this._start = start;
     this._duration = duration;
     this._eventPrice = eventPrice;

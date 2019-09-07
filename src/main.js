@@ -2,7 +2,7 @@ import {Info} from './components/trip-Info';
 import {Menu, getMenu} from './components/menu';
 import {Filter, getFilters} from './components/filters';
 import {getMockData} from './data';
-import {render, position, formatDateCount} from './components/utils';
+import {render, position} from './components/utils';
 import {TripController} from './components/trip-controller';
 
 
@@ -44,7 +44,7 @@ const checkTypeofPrice = (num) => {
 const getInfo = (array) => {
   return array.reduce(
       (result, item) => {
-        result.cities.push(item.city);
+        result.cities.push(item.city.name);
         result.dates.push(item.schedule.start);
         return result;
       },
@@ -53,6 +53,7 @@ const getInfo = (array) => {
 };
 
 const infoArrays = getInfo(events);
+
 
 
 const renderMenu = (mock) => {
