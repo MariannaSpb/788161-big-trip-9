@@ -18,8 +18,13 @@ export const formatDate = (date) => {
 };
 
 
+// export const formatDayMonth = (date) => {
+//   date = new Date(date);
+//   return `${new Date(date).toLocaleDateString(`en-US`, {day: `2-digit`, month: `short`})}`;
+// };
+
 export const formatDayMonth = (date) => {
-  date = new Date(date);
+  date = new Date(parseInt(date, 10));
   return `${new Date(date).toLocaleDateString(`en-US`, {day: `2-digit`, month: `short`})}`;
 };
 
@@ -32,6 +37,14 @@ export const formatTime = (time) => {
   time = new Date(time);
   return `${new Date(time).toLocaleTimeString([], {hour: `2-digit`, minute: `2-digit`})}`;
 };
+
+
+export const formatDateCount = (count) => {
+  const date = new Date(count);
+  return date.setHours(0, 0, 0, 0);
+};
+
+//formatDateCount(12356423423478)  //12356398800000
 
 
 export const position = {

@@ -6,8 +6,9 @@ export class TripDays extends AbstractComponent {
   }
 
   getTemplate() {
-    return `<ul class="trip-days">
-
-        </ul>`;
+    return `
+      <ul class="trip-days">
+      </ul>
+    `.trim();
   }
 }

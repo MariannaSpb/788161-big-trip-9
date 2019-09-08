@@ -1,7 +1,6 @@
-import {cityList} from '../data';
-import {formatDate, formatTime} from './utils';
+import {cities} from '../data';
 import {AbstractComponent} from './abstract';
-
+import moment from 'moment';
 
 const calculatePrice = (price, offer) => {
   let costs = offer.filter((offerItem) => offerItem.isAdded).map((it) => it.price);
@@ -16,12 +15,15 @@ export class EditEvent extends AbstractComponent {
     super();
     this._icon = icon;
     this._getTitle = getTitle;
-    this._description = description;
-    this._city = city;
+    // this._description = description;
+    // this._picture = picture;
+    this._picture = city.pictures;
+    this._description = city.description;
+    // this._city = city;
+    this._city = city.name;
     this._start = start;
     this._duration = duration;
     this._eventPrice = eventPrice;
-    this._picture = picture;
     this._offer = offer;
     this._productId = productId;
   }
@@ -105,8 +107,9 @@ export class EditEvent extends AbstractComponent {
           </label>
           <input class="event__input  event__input--destination" id="event-destination-${this._productId}" type="text" name="event-destination" value=${this._city} list="destination-list-${this._productId}">
           <datalist id="destination-list-${this._productId}">
-            ${cityList.map((cityItem) => `<option value="${cityItem}"></option>
-              `).join(``)}
+          ${cities.map(({name}) => `
+          <option value="${name}"></option>
+        `).join(``)}
           </datalist>
         </div>
 
@@ -114,12 +117,12 @@ export class EditEvent extends AbstractComponent {
           <label class="visually-hidden" for="event-start-time-${this._productId}">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-${this._productId}" type="text" name="event-start-time" value='${formatDate(this._start) + ` ` + formatTime(this._start)}'>
+          <input class="event__input  event__input--time" id="event-start-time-${this._productId}" type="text" name="event-start-time" value='${moment(this._start).format(`DD/MM/YY HH:mm`)}'>
           —
           <label class="visually-hidden" for="event-end-time-${this._productId}">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-${this._productId}" type="text" name="event-end-time" value='${formatDate(this._start) + ` ` + formatTime(this._start + this._duration)}'>
+          <input class="event__input  event__input--time" id="event-end-time-${this._productId}" type="text" name="event-end-time" value='${moment(this._start + this._duration).format(`DD/MM/YY HH:mm`)}'>
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -205,9 +208,7 @@ export class EditEvent extends AbstractComponent {
 
           <div class="event__photos-container">
             <div class="event__photos-tape">
-    ${this._picture(5).map((elem) => {
-    return `<img class="event__photo" src=${elem} alt="Event photo">`;
-  })}
+    ${this._picture.map((elem) => `<img class="event__photo" src=${elem} alt="Event photo">`).join(``)}
             </div>
           </div>
         </section>
