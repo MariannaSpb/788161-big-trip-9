@@ -69,3 +69,9 @@ export const render = (container, element, place) => {
       break;
   }
 };
+
+export const unrender = (element) => {
+  if (element) {
+    element.remove();
+  }
+};
