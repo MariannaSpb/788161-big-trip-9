@@ -251,6 +251,3 @@ export const getMockData = () => ({
     return arr;
   },
 });
-
-
-console.log(`event`, getMockData().type.offers)

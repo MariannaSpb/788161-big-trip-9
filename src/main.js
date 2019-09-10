@@ -29,7 +29,6 @@ const events = createEventsArray(getMockData, CARD_COUNT);
 export const totalPrice = (cards) => {
   return cards.reduce((result, item) => {
     return result + item.eventPrice + [...item.type.offers].reduce((sum, element) => {
-      console.log(`[...item.type.offers]`, [...item.type.offers]);
       return sum + element.price;
     }, 0);
   }, 0);
@@ -54,8 +53,6 @@ const getInfo = (array) => {
 };
 
 const infoArrays = getInfo(events);
-
-
 
 const renderMenu = (mock) => {
   const menu = new Menu(mock);

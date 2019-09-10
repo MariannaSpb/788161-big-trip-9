@@ -48,12 +48,11 @@ export class TripController {
 
   _renderEvent(container, mock) {
     const pointController = new PointController(container, mock, this._onDataChange, this._onChangeView);
-    console.log(`pointController`, pointController)
     this._subscriptions.push(pointController.setDefaultView.bind(pointController));
   }
 
   _renderDayList() {
-// перерендер
+  // перерендер
     this._clearDayList();
     render(this._container, this._tripDays.getElement(), position.BEFOREEND);
 
@@ -146,9 +145,7 @@ export class TripController {
       return sum + current;
     }, 0);
     const allOffersPrice = eventsArray.map(({type}) => type.offers); // собрали все
-    console.log(`allOffersPrice`, allOffersPrice)
-    const appliedOffers = allOffersPrice.map((item) => item.filter(({isApplied}) => isApplied)); //собрали трушные
-    console.log(`appliedOffers`, appliedOffers)
+    const appliedOffers = allOffersPrice.map((item) => item.filter(({isApplied}) => isApplied)); // собрали трушные
     const offersPrices = appliedOffers.map((items) => items.map((item) => item.price));
     const offersPricesTotalCount = offersPrices.map((prices) => prices.reduce((sum, current) => {
       return sum + current;

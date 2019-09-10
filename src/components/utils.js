@@ -44,9 +44,6 @@ export const formatDateCount = (count) => {
   return date.setHours(0, 0, 0, 0);
 };
 
-//formatDateCount(12356423423478)  //12356398800000
-
-
 export const position = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
