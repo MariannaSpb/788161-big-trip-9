@@ -1,10 +1,9 @@
 import {Day} from './trip-day';
 import {TripDays} from './trip-days';
-import {render, position, formatDateCount} from './utils';
+import {render, position, formatDateCount, unrender} from './utils';
 import {NoPoints} from './event-message';
-import {EditEvent} from './form-edit';
-import {Event} from './trip-event-card';
 import {Sort} from './sort';
+import {PointController} from './point-controller';
 
 
 export class TripController {
@@ -14,6 +13,9 @@ export class TripController {
     this._tripDays = new TripDays(); // "trip-days"
     this._noPoints = new NoPoints();
     this._sort = new Sort();
+    this._subscriptions = [];
+    this._onChangeView = this._onChangeView.bind(this);
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
 
@@ -21,13 +23,14 @@ export class TripController {
     let dates = new Set();
     this._events.sort((a, b) => a.schedule.start - b.schedule.start).map((item) => dates.add(new Date(item.schedule.start).toDateString()));
     const dateArray = Array.from(dates);
-    // console.log(`dateArray`, dateArray) ["Fri Sep 06 2019", "Sun Sep 08 2019", "Mon Sep 09 2019", "Wed Sep 11 2019", "Thu Sep 12 2019"]
     return dateArray;
   }
 
   init() {
     render(this._container, this._sort.getElement(), position.AFTERBEGIN);
     render(this._container, this._tripDays.getElement(), position.BEFOREEND);
+
+    this._getPrice(this._events);
 
     this._sort.getElement()
     .addEventListener(`click`, (evt) => this._onSortClick(evt));
@@ -43,10 +46,19 @@ export class TripController {
     }
   }
 
+  _renderEvent(container, mock) {
+    const pointController = new PointController(container, mock, this._onDataChange, this._onChangeView);
+    this._subscriptions.push(pointController.setDefaultView.bind(pointController));
+  }
+
   _renderDayList() {
+  // перерендер
+    this._clearDayList();
+    render(this._container, this._tripDays.getElement(), position.BEFOREEND);
+
     document.querySelector(`#sort-day`).classList.remove(`visually-hidden`);
     const cardEventsByDate = this._events.reduce((day, event) => {
-      const time = formatDateCount(event.schedule.start);
+      const time = formatDateCount(event.start);
       if (!day[time]) {
         day[time] = [];
       }
@@ -55,7 +67,6 @@ export class TripController {
 
       return day;
     }, {});
-    // Массив перечислений собственных свойств объекта с парами [key, value]
     Object.entries(cardEventsByDate)
     .sort(([a], [b]) => a - b)
     .forEach(([date, events], index) => {
@@ -94,7 +105,8 @@ export class TripController {
 
     switch (evt.target.dataset.sortType) {
       case `time`:
-        const sortedByTime = this._events.slice().sort((a, b) => b.schedule.duration - a.schedule.duration);
+        const sortedByTime = this._events.slice().sort((a, b) => (b.end - b.start) - (a.end - a.start));
+        // console.log(`b.end`, (parseInt((this.duration - this.duration), 10)));
         sortedByTime.forEach((mock) => this._renderEvent(eventContainer, mock));
         break;
       case `price`:
@@ -108,45 +120,42 @@ export class TripController {
     }
   }
 
+  _onDataChange(newData, oldData) {
+    this._events[this._events.findIndex((it) => it === oldData)] = newData;
+    this._renderDayList();
+  }
 
-  _renderEvent(container, mock) {
-    const event = new Event(mock);
-    const editForm = new EditEvent(mock);
-    // const eventContainer = document.querySelector(`.trip-events__list`);
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        container.replaceChild(event.getElement(), editForm.getElement());
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    event.getElement()
-      .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, () => {
-        container.replaceChild(editForm.getElement(), event.getElement());
-        document.addEventListener(`keydown`, onEscKeyDown);
-      });
-
-    editForm.getElement()
-    .querySelector(`.event__rollup-btn`)
-    .addEventListener(`click`, () => {
-      container.replaceChild(event.getElement(), editForm.getElement());
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-
-    editForm.getElement()
-    .querySelector(`form`)
-    .addEventListener(`submit`, () => {
-      container.replaceChild(event.getElement(), editForm.getElement());
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-
-    render(container, event.getElement(), position.BEFOREEND);
+  _onChangeView() {
+    this._subscriptions.forEach((it) => it());
   }
 
   _renderEventMessage() {
     const message = new NoPoints();
     render(this._tripEvents, message.getElement(), position.BEFOREEND);
+  }
+
+  _clearDayList() {
+    unrender(this._tripDays.getElement());
+    this._tripDays.removeElement();
+  }
+
+
+  _getPrice(eventsArray) {
+    const totalPrice = eventsArray.map(({eventPrice}) => eventPrice).reduce((sum, current) => {
+      return sum + current;
+    }, 0);
+    const allOffersPrice = eventsArray.map(({type}) => type.offers); // собрали все
+    const appliedOffers = allOffersPrice.map((item) => item.filter(({isApplied}) => isApplied)); // собрали трушные
+    const offersPrices = appliedOffers.map((items) => items.map((item) => item.price));
+    const offersPricesTotalCount = offersPrices.map((prices) => prices.reduce((sum, current) => {
+      return sum + current;
+    }, 0));
+    const sum = offersPricesTotalCount.reduce((sumCount, current) => {
+      return sumCount + current;
+    }, 0);
+    const result = totalPrice + sum;
+    const costContainer = document.querySelector(`.trip-info__cost-value`);
+    costContainer.innerHTML = result;
   }
 
 }

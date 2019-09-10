@@ -1,14 +1,12 @@
 import {getRandomElem} from './components/utils';
 import {getRandomBoolean} from './components/utils';
 
-const OFFER_COUNT = 2;
-// const DESCRIPTION_COUNT = 3;
+export const OFFER_COUNT = 2;
+
 const PICTURE_COUNT = 3;
 
-const sentence = `orem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 
-
-const randomOffer = (offers, count) => {
+export const randomOffer = (offers, count) => {
   const randomElem = Math.floor(Math.random() * offers.length);
   return offers.slice(randomElem, randomElem + count);
 };
@@ -20,28 +18,22 @@ export const randomCity = (cityArr, count) => {
 };
 
 
-const priceType = [
+export const priceType = [
   {type: `Add luggage`, price: 10, isAdded: true},
   {type: `Switch to comfort class`, price: 150, isAdded: true},
   {type: `Add meal`, price: 2, isAdded: true},
   {type: `Choose seats`, price: 9, isAdded: true}
 ];
 
-const splitText = (str, count) => {
-  const text = str.split(`.`);
-  const randomElem = Math.floor(Math.random() * text.length);
-  return text.slice(randomElem, randomElem + count);
-};
 
-
-const priceList = [
+export const priceList = [
   20,
   160,
   50,
   10,
 ];
 
-const eventType = [`bus`, `check-in`, `drive`, `flight`, `restaurant`, `ship`, `sightseeing`, `taxi`, `train`, `transport`, `trip`
+export const eventType = [`bus`, `check-in`, `drive`, `flight`, `restaurant`, `ship`, `sightseeing`, `taxi`, `train`, `transport`, `trip`
 ];
 
 
@@ -100,52 +92,162 @@ export const timeCalc = (seconds) => {
 };
 
 
-export const getMockData = () => ({
-  city: cities[Math.floor(Math.random() * 5)],
-  // description: splitText(sentence, DESCRIPTION_COUNT),
-  // city: getRandomElem(uniqueCity(cityList)),
-  schedule: {
-    start: Date.now() + (Math.random() * 7) * 24 * 60 * 60 * 1000,
-    duration: (Math.random() * 2) * 24 * 60 * 60 * 1000,
+export const getDuration = (duration) => {
+  let minutes = Math.floor((duration / (1000 * 60)) % 60);
+  let hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
-  },
+  hours = (hours < 10) ? `0` + hours : hours;
+  minutes = (minutes < 10) ? `0` + minutes : minutes;
+
+  return `${parseInt(hours, 10) ? `${hours}H` : ``} ${parseInt(minutes, 10) ? `${minutes}M` : ``}`.trim();
+};
+
+export const types = [{
+  id: `taxi`,
+  title: `Taxi`,
+  placeholder: `to`,
+  offers: [{
+    id: `taxi-1`,
+    title: `Choose taxi`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }]
+},
+{
+  id: `bus`,
+  title: `Bus`,
+  placeholder: `to`,
+  offers: [{
+    id: `bus-seat`,
+    title: `Choose seats`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }, {
+    id: `bus-meal`,
+    title: `Add meal`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }]
+},
+{
+  id: `train`,
+  title: `Train`,
+  placeholder: `to`,
+  offers: [{
+    id: `train-luggage`,
+    title: `Add luggage`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }, {
+    id: `train-class`,
+    title: `Switch to comfort class`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }, {
+    id: `train-meal`,
+    title: `Add meal`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }, {
+    id: `train-seat`,
+    title: `Choose seats`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }]
+},
+{
+  id: `flight`,
+  title: `Flight`,
+  placeholder: `to`,
+  offers: [{
+    id: `flight-seat`,
+    title: `Choose seats`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }, {
+    id: `flight-meal`,
+    title: `Choose meal`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }, {
+    id: `flight-luggage`,
+    title: `Add luggage`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }]
+},
+{
+  id: `ship`,
+  title: `Ship`,
+  placeholder: `to`,
+  offers: []
+},
+{
+  id: `check-in`,
+  title: `Check-in`,
+  placeholder: `in`,
+  offers: [{
+    id: `check-in-room`,
+    title: `Change room`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }, {
+    id: `check-in-late`,
+    title: `Late check-in`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }]
+},
+{
+  id: `transport`,
+  title: `Transport`,
+  placeholder: `to`,
+  offers: []
+},
+{
+  id: `drive`,
+  title: `Drive`,
+  placeholder: `to`,
+  offers: []
+},
+{
+  id: `sightseeing`,
+  title: `Sightseeing`,
+  placeholder: `in`,
+  offers: []
+},
+{
+  id: `restaurant`,
+  title: `Restaurant`,
+  placeholder: `in`,
+  offers: [{
+    id: `restaurant-table`,
+    title: `Reserve table`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }, {
+    id: `restaurant-order`,
+    title: `Pre order`,
+    price: 10 + Math.floor(Math.random() * 10),
+    isApplied: Boolean(Math.round(Math.random()))
+  }]
+}
+];
+
+export const getMockData = () => ({
+  type: types[Math.floor(Math.random() * 10)],
+  city: cities[Math.floor(Math.random() * 5)],
+  start: Date.now() - (Math.random() * 2) * 24 * 60 * 60 * 1000,
+  end: Date.now() + (Math.random() * 2) * 24 * 60 * 60 * 1000,
   eventPrice: getRandomElem(priceList),
-  offer: randomOffer(priceType, OFFER_COUNT),
   icon: getRandomElem(eventType),
   isFavorite: getRandomBoolean(),
   productId: ``,
-  get getTitle() {
-    switch (this.icon) {
-      case `taxi`:
-        return `taxi`;
-      case `bus`:
-        return `Bus to`;
-      case `train`:
-        return `Train to`;
-      case `ship`:
-        return `Ship to`;
-      case `transport`:
-        return `Transport to`;
-      case `drive`:
-        return `Drive to`;
-      case `flight`:
-        return `Flight to`;
-      case `check-in`:
-        return `Check into hotel`;
-      case `sightseeing`:
-        return `Sightseeing in`;
-      case `restaurant`:
-        return `Restaurant in`;
-      default:
-        return ``;
+  picture(count) {
+    let arr = [];
+    for (let i = 0; i < count; i++) {
+      arr.push(`http://picsum.photos/300/150?r=${Math.random()}`);
     }
+    return arr;
   },
-  // picture(count) {
-  //   let arr = [];
-  //   for (let i = 0; i < count; i++) {
-  //     arr.push(`http://picsum.photos/300/150?r=${Math.random()}`);
-  //   }
-  //   return arr;
-  // },
 });
-

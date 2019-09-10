@@ -6,7 +6,7 @@ import {render, position} from './components/utils';
 import {TripController} from './components/trip-controller';
 
 
-const CARD_COUNT = 6;
+const CARD_COUNT = 3;
 const mainInfoContainer = document.querySelector(`.trip-info`);
 const controlsContainer = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
@@ -19,7 +19,7 @@ export const createEventsArray = (mockData, count) => {
     eventsArray.push(mockData());
   }
   eventsArray.map((item, index, array) => array.indexOf(item) === index ? (item.productId = index + 1) : item);
-  eventsArray.sort((a, b) => a.schedule.start - b.schedule.start);
+  eventsArray.sort((a, b) => a.start - b.start);
 
   return eventsArray;
 };
@@ -28,7 +28,7 @@ const events = createEventsArray(getMockData, CARD_COUNT);
 
 export const totalPrice = (cards) => {
   return cards.reduce((result, item) => {
-    return result + item.eventPrice + [...item.offer].reduce((sum, element) => {
+    return result + item.eventPrice + [...item.type.offers].reduce((sum, element) => {
       return sum + element.price;
     }, 0);
   }, 0);
@@ -45,7 +45,7 @@ const getInfo = (array) => {
   return array.reduce(
       (result, item) => {
         result.cities.push(item.city.name);
-        result.dates.push(item.schedule.start);
+        result.dates.push(item.start);
         return result;
       },
       {cities: [], dates: []}
@@ -53,8 +53,6 @@ const getInfo = (array) => {
 };
 
 const infoArrays = getInfo(events);
-
-
 
 const renderMenu = (mock) => {
   const menu = new Menu(mock);

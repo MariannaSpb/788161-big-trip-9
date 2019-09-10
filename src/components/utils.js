@@ -44,9 +44,6 @@ export const formatDateCount = (count) => {
   return date.setHours(0, 0, 0, 0);
 };
 
-//formatDateCount(12356423423478)  //12356398800000
-
-
 export const position = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
@@ -67,5 +64,11 @@ export const render = (container, element, place) => {
     case position.BEFOREEND:
       container.append(element);
       break;
+  }
+};
+
+export const unrender = (element) => {
+  if (element) {
+    element.remove();
   }
 };
