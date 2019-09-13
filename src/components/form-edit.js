@@ -3,6 +3,7 @@ import {unrender, position} from './utils';
 import {AbstractComponent} from './abstract';
 import moment from 'moment';
 
+
 export class EditEvent extends AbstractComponent {
   constructor({type, city, eventPrice, productId, start, end}) {
     super();
@@ -20,17 +21,17 @@ export class EditEvent extends AbstractComponent {
     this._subscribeOnEvents();
   }
 
-  _getPrice() {
-    let costs = this._offers.filter((offerItem) => {
-      // console.log(`offerItem`, offerItem)
-      return offerItem.isApplied;
-    }).map((it) => it.price);
-    for (let cost of costs) {
-      // console.log(`offerItem`, offerItem)
-      this._eventPrice = parseInt(cost, 10) + parseInt(this._eventPrice, 10);
-    }
-    return this._eventPrice;
-  }
+  // _getPrice() {
+  //   let costs = this._offers.filter((offerItem) => {
+  //     // console.log(`offerItem`, offerItem)
+  //     return offerItem.isApplied;
+  //   }).map((it) => it.price);
+  //   for (let cost of costs) {
+  //     // console.log(`offerItem`, offerItem)
+  //     this._eventPrice = parseInt(cost, 10) + parseInt(this._eventPrice, 10);
+  //   }
+  //   return this._eventPrice;
+  // }
 
 
   _chooseType() {
@@ -74,7 +75,7 @@ export class EditEvent extends AbstractComponent {
 
   getTemplate() {
     return `<li class="trip-events__item">
-    <form class="event  event--edit" action="#" method="post">
+    <form class="event  event--edit" action="#" method="post" name="edit">
       <header class="event__header">
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">

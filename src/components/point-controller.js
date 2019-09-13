@@ -2,6 +2,9 @@ import {EditEvent} from './form-edit';
 import {Event} from './trip-event-card';
 import {render, position} from './utils';
 import {cities, types} from '../data';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
 
 
 export class PointController {
@@ -16,6 +19,25 @@ export class PointController {
   }
 
   init() {
+    // let form = document.forms.edit;
+    // let elemStart = form.elements.eventStartTime;
+    // let elemEnd = form.elements.eventEndTime;
+    flatpickr(this._editForm.getElement().querySelector(`input[name= event-start-time]`), {
+      altInput: true,
+      allowInput: true,
+      enableTime: true,
+      defaultDate: this._data.start,
+      altFormat: `d/m/y H:i`,
+    });
+
+    flatpickr(this._editForm.getElement().querySelector(`input[name= event-end-time]`), {
+      altInput: true,
+      allowInput: true,
+      enableTime: true,
+      defaultDate: this._data.end,
+      altFormat: `d/m/y H:i`,
+    });
+
     const onEscKeyDown = (evt) => {
       if (evt.key === `Escape` || evt.key === `Esc`) {
         this._container.replaceChild(this._event.getElement(), this._editForm.getElement());
