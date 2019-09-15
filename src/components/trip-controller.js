@@ -46,6 +46,14 @@ export class TripController {
     }
   }
 
+  hide() {
+    this._container.classList.add(`visually-hidden`);
+  }
+
+  show() {
+    this._container.classList.remove(`visually-hidden`);
+  }
+
   _renderEvent(container, mock) {
     const pointController = new PointController(container, mock, this._onDataChange, this._onChangeView);
     this._subscriptions.push(pointController.setDefaultView.bind(pointController));
@@ -121,7 +129,8 @@ export class TripController {
   }
 
   _onDataChange(newData, oldData) {
-    this._events[this._events.findIndex((it) => it === oldData)] = newData;
+    const index = this._events[this._events.findIndex((it) => it === oldData)] = newData;
+    this._events[index] = newData; //
     this._renderDayList();
   }
 

@@ -21,9 +21,8 @@ export class EditEvent extends AbstractComponent {
     this._subscribeOnEvents();
   }
 
-  // _getPrice() {
+  // _calcPrice() {
   //   let costs = this._offers.filter((offerItem) => {
-  //     // console.log(`offerItem`, offerItem)
   //     return offerItem.isApplied;
   //   }).map((it) => it.price);
   //   for (let cost of costs) {
@@ -138,7 +137,7 @@ export class EditEvent extends AbstractComponent {
             <span class="visually-hidden">Price</span>
             €
           </label>
-          <input class="event__input  event__input--price" id="event-price-${this._productId}" type="text" name="event-price" value="${this._getPrice()}">
+          <input class="event__input  event__input--price" id="event-price-${this._productId}" type="text" name="event-price" value="${this._eventPrice}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -193,7 +192,7 @@ export class EditEvent extends AbstractComponent {
 
   _subscribeOnEvents() {
     this._chooseType();
-    this._getPrice();
+    // this._calcPrice();
   }
 }
 
