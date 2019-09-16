@@ -1,6 +1,6 @@
 import {EditEvent} from './form-edit';
 import {Event} from './trip-event-card';
-import {render, position} from './utils';
+import {render, position, Mode, unrender} from './utils';
 import {cities, types} from '../data';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -8,20 +8,27 @@ import 'flatpickr/dist/themes/light.css';
 
 
 export class PointController {
-  constructor(container, data, onDataChange, onChangeView) {
+  constructor(container, data, mode, onDataChange, onChangeView) {
     this._container = container;
     this._data = data;
-    this._event = new Event(data);
-    this._editForm = new EditEvent(data);
+    this._event = new Event(this._data);
+    this._editForm = new EditEvent(this._data);
     this._onChangeView = onChangeView;
     this._onDataChange = onDataChange;
-    this.init();
+    this.init(mode);
   }
 
-  init() {
-    // let form = document.forms.edit;
-    // let elemStart = form.elements.eventStartTime;
-    // let elemEnd = form.elements.eventEndTime;
+  init(mode) {
+
+    let currentView = this._event;
+    const addEventBtn = document.querySelector(`.trip-main__event-add-btn`);
+
+    if (mode === Mode.ADDING) {
+      this._editForm.getElement().classList.add(`trip-events__item`);
+      this._editForm.getElement().querySelector(`.event__favorite-btn`).remove();
+      currentView = this._editForm;
+    }
+
     flatpickr(this._editForm.getElement().querySelector(`input[name= event-start-time]`), {
       altInput: true,
       allowInput: true,
@@ -40,7 +47,15 @@ export class PointController {
 
     const onEscKeyDown = (evt) => {
       if (evt.key === `Escape` || evt.key === `Esc`) {
-        this._container.replaceChild(this._event.getElement(), this._editForm.getElement());
+        if (mode === Mode.DEFAULT) {
+          if (this._container.contains(this._editForm.getElement())) {
+            this._container.replaceChild(this._event.getElement(), this._editForm.getElement());
+          }
+        } else if (mode === Mode.ADDING) {
+          unrender(currentView.getElement());
+          currentView.removeElement();
+          this._container.getElement().removeChild(currentView.getElement());
+        }
         document.removeEventListener(`keydown`, onEscKeyDown);
       }
     };
@@ -60,11 +75,27 @@ export class PointController {
       });
 
     this._editForm.getElement()
-      .querySelector(`form`)
+      .querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, () => {
+        if (mode === Mode.DEFAULT) {
+          this._onDataChange(null, this._data);
+
+        } else if (mode === Mode.ADDING) {
+          unrender(currentView.getElement());
+          currentView.removeElement();
+          addEventBtn.removeAttribute(`disabled`);
+        }
+      });
+
+
+    this._editForm.getElement()
       .addEventListener(`submit`, (evt) => {
         evt.preventDefault();
+        // this._container.replaceChild(this._event.getElement(), this._editForm.getElement());
+        this._container.replaceChild(currentView.getElement(), this._editForm.getElement());
+        unrender(currentView.getElement());
 
-        const formData = new FormData(this._editForm .getElement().querySelector(`.event--edit`));
+        const formData = new FormData(this._editForm .getElement());
 
         const entry = {
           eventPrice: formData.get(`event-price`),
@@ -83,11 +114,19 @@ export class PointController {
           }
         });
 
-        this._onDataChange(entry, this._data);
+        this._onDataChange(entry, mode === Mode.DEFAULT ? this._data : null);
+
+        // const addEventBtn = document.querySelector(`.trip-main__event-add-btn`);
+        addEventBtn.removeAttribute(`disabled`);
 
         document.removeEventListener(`keydown`, onEscKeyDown);
+        console.log(`currentViewFORM`, currentView.getElement())
       });
-    render(this._container, this._event.getElement(), position.BEFOREEND);
+
+
+    render(this._container, currentView.getElement(), position.AFTERBEGIN);
+
+    console.log(`currentViewrender`, currentView.getElement())
   }
 
   setDefaultView() {

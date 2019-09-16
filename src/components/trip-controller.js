@@ -1,10 +1,10 @@
 import {Day} from './trip-day';
 import {TripDays} from './trip-days';
-import {render, position, formatDateCount, unrender} from './utils';
+import {render, position, formatDateCount, unrender, Mode} from './utils';
 import {NoPoints} from './event-message';
 import {Sort} from './sort';
 import {PointController} from './point-controller';
-
+import moment from 'moment';
 
 export class TripController {
   constructor(container, events) {
@@ -14,17 +14,16 @@ export class TripController {
     this._noPoints = new NoPoints();
     this._sort = new Sort();
     this._subscriptions = [];
+    this._creatingEvent = null;
     this._onChangeView = this._onChangeView.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
+    this._addEventBtn = document.querySelector(`.trip-main__event-add-btn`);
+
+    this._addEventBtn.addEventListener(`click`, () => {
+      this.createEvent();
+    });
   }
 
-
-  _getUniqueDates() {
-    let dates = new Set();
-    this._events.sort((a, b) => a.schedule.start - b.schedule.start).map((item) => dates.add(new Date(item.schedule.start).toDateString()));
-    const dateArray = Array.from(dates);
-    return dateArray;
-  }
 
   init() {
     render(this._container, this._sort.getElement(), position.AFTERBEGIN);
@@ -34,15 +33,17 @@ export class TripController {
 
     this._sort.getElement()
     .addEventListener(`click`, (evt) => this._onSortClick(evt));
+
     this._renderDayList();
 
     if (this._events.length === 0) {
-      render(this._container, this._noPoints.getElement(), position.BEFOREEND);
-      const sortContainer = this._container.querySelector(`.trip-events__trip-sort`);
-      const daysContainer = this._container.querySelector(`.trip-days`);
-      sortContainer.remove();
-      daysContainer.remove();
-      return;
+      this._renderEmptyMessage();
+      // render(this._container, this._noPoints.getElement(), position.BEFOREEND);
+      // const sortContainer = this._container.querySelector(`.trip-events__trip-sort`);
+      // const daysContainer = this._container.querySelector(`.trip-days`);
+      // sortContainer.remove();
+      // daysContainer.remove();
+      // return;
     }
   }
 
@@ -54,8 +55,32 @@ export class TripController {
     this._container.classList.remove(`visually-hidden`);
   }
 
+  createEvent() {
+    // if (this._creatingEvent) {
+    //   return;
+    // }
+    const defaultEvent = {
+      type: {
+        id: `flight`,
+        title: `Flight`,
+        placeholder: `to`,
+      },
+      city: {},
+      start: moment().format(),
+      end: moment().format(),
+      eventPrice: ``,
+      productId: ``,
+    };
+
+    this._creatingEvent = new PointController(this._container, defaultEvent, Mode.ADDING, this._onDataChange, this._onChangeView);
+
+    render(this._container, this._sort.getElement(), position.AFTERBEGIN);
+    this._addEventBtn.setAttribute(`disabled`, `disabled`);
+    document.querySelector(`.event__rollup-btn`).remove();
+  }
+
   _renderEvent(container, mock) {
-    const pointController = new PointController(container, mock, this._onDataChange, this._onChangeView);
+    const pointController = new PointController(container, mock, Mode.DEFAULT, this._onDataChange, this._onChangeView);
     this._subscriptions.push(pointController.setDefaultView.bind(pointController));
   }
 
@@ -64,7 +89,7 @@ export class TripController {
     this._clearDayList();
     render(this._container, this._tripDays.getElement(), position.BEFOREEND);
 
-    document.querySelector(`#sort-day`).classList.remove(`visually-hidden`);
+    // document.querySelector(`#sort-day`).classList.remove(`visually-hidden`);
     const cardEventsByDate = this._events.reduce((day, event) => {
       const time = formatDateCount(event.start);
       if (!day[time]) {
@@ -128,10 +153,29 @@ export class TripController {
     }
   }
 
+
   _onDataChange(newData, oldData) {
-    const index = this._events[this._events.findIndex((it) => it === oldData)] = newData;
-    this._events[index] = newData; //
-    this._renderDayList();
+    const index = this._events.findIndex((event) => event === oldData);
+    // Если newData равно null, то это значит, что элемент удален.
+    // Создаем новый массив не включая в него удаленный элемент.
+    if (newData === null && oldData === null) {
+      this._creatingEvent = null;
+    }
+
+    if (newData === null) {
+      this._events = [...this._events.slice(0, index), ...this._events.slice(index + 1)];
+    } else if (oldData === null) {
+      this._events = [newData, ...this._events];
+    } else {
+      this._events[index] = newData;
+    }
+    if (this._events.length) {
+      render(this._container, this._sort.getElement(), position.BEFOREEND);
+      this._noPoints.getElement().remove();
+      this._renderDayList();
+    } else {
+      this._renderEmptyMessage();
+    }
   }
 
   _onChangeView() {
@@ -165,6 +209,15 @@ export class TripController {
     const result = totalPrice + sum;
     const costContainer = document.querySelector(`.trip-info__cost-value`);
     costContainer.innerHTML = result;
+  }
+
+  _renderEmptyMessage() {
+    render(this._container, this._noPoints.getElement(), position.BEFOREEND);
+    const sortContainer = this._container.querySelector(`.trip-events__trip-sort`);
+    const daysContainer = this._container.querySelector(`.trip-days`);
+    sortContainer.remove();
+    daysContainer.remove();
+    return;
   }
 
 }

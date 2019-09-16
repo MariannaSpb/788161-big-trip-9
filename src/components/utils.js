@@ -46,7 +46,9 @@ export const formatDateCount = (count) => {
 
 export const position = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
+  BEFOREEND: `beforeend`,
+  AFTER: `after`,
+  BEFORE: `before`
 };
 
 export const createElement = (template) => {
@@ -64,6 +66,12 @@ export const render = (container, element, place) => {
     case position.BEFOREEND:
       container.append(element);
       break;
+    case position.AFTER:
+      container.after(element);
+      break;
+    case position.BEFORE:
+      container.before(element);
+      break;
   }
 };
 
@@ -71,4 +79,10 @@ export const unrender = (element) => {
   if (element) {
     element.remove();
   }
+};
+
+
+export const Mode = {
+  ADDING: `adding`,
+  DEFAULT: `default`,
 };

@@ -240,8 +240,8 @@ export const getMockData = () => ({
   start: Date.now() - (Math.random() * 2) * 24 * 60 * 60 * 1000,
   end: Date.now() + (Math.random() * 2) * 24 * 60 * 60 * 1000,
   eventPrice: getRandomElem(priceList),
-  icon: getRandomElem(eventType),
-  isFavorite: getRandomBoolean(),
+  // icon: getRandomElem(eventType),
+  // isFavorite: getRandomBoolean(),
   productId: ``,
   picture(count) {
     let arr = [];

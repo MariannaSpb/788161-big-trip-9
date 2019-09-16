@@ -8,10 +8,12 @@ export class EditEvent extends AbstractComponent {
   constructor({type, city, eventPrice, productId, start, end}) {
     super();
     this._type = type;
-    this._offers = this._type.offers;
-    this._picture = city.pictures;
+    // this._offers = this._type.offers;
+    this._offers = this._type.offers || [];
+    // this._picture = city.pictures;
+    this._picture = city.pictures || [];
     this._description = city.description;
-    this._city = city.name;
+    this._city = city.name || ``;
     this._start = start;
     this._end = end;
     this._eventPrice = eventPrice;
@@ -33,48 +35,9 @@ export class EditEvent extends AbstractComponent {
   // }
 
 
-  _chooseType() {
-    this.getElement()
-    .querySelectorAll(`.event__type-group`).forEach((element) => {
-      element.addEventListener(`click`, (evt) => {
-        if (evt.target.value) {
-          const type = types[types.findIndex((it) => it.id === evt.target.value)];
-          this.getElement().querySelector(`.event__label`).innerHTML = `${type.title} ${type.placeholder}`;
-          this.getElement().querySelector(`.event__type-icon`).src = `img/icons/${type.id}.png`;
-          const offersContainer = this.getElement().querySelector(`.event__section--offers`);
-          const offersHTML = `<section class="event__section  event__section--offers">
-            <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-            <div class="event__available-offers">
-            ${type.offers.map(({id, title, price}) => `
-              <div class="event__offer-selector">
-                <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}"
-                type="checkbox" name="event-offer-${id}">
-                <label class="event__offer-label" for="event-offer-${id}">
-                  <span class="event__offer-title">${title}</span>
-                  &plus;
-                  &euro;&nbsp;<span class="event__offer-price">${price}</span>
-                </label>
-              </div>`).join(``)}
-            </div>
-          </section>`;
-          if (type.offers.length) {
-            if (offersContainer) {
-              offersContainer.innerHTML = offersHTML;
-            } else {
-              this.getElement().querySelector(`.event__details`).insertAdjacentHTML(position.AFTERBEGIN, offersHTML);
-            }
-          } else {
-            unrender(offersContainer);
-          }
-        }
-      });
-    });
-  }
-
 
   getTemplate() {
-    return `<li class="trip-events__item">
-    <form class="event  event--edit" action="#" method="post" name="edit">
+    return `<form class="event  event--edit" action="#" method="post" name="edit">
       <header class="event__header">
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -112,7 +75,7 @@ export class EditEvent extends AbstractComponent {
           <label class="event__label  event__type-output" for="event-destination-${this._productId}">
           ${this._type.title} ${this._type.placeholder}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-${this._productId}" type="text" name="event-destination" value=${this._city} list="destination-list-${this._productId}">
+          <input class="event__input  event__input--destination" id="event-destination-${this._productId}" type="text" name="event-destination" value="${this._city}" list="destination-list-${this._productId}">
           <datalist id="destination-list-${this._productId}">
           ${cities.map(({name}) => `
           <option value="${name}"></option>
@@ -156,7 +119,8 @@ export class EditEvent extends AbstractComponent {
         </button>
       </header>
 
-      <section class="event__details">
+      ${this._city || this._offers.length !== 0 ? `
+      ${`<section class="event__details">
       ${this._offers.length ? `
         ${`<section class="event__section  event__section--offers">
               <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -174,21 +138,59 @@ export class EditEvent extends AbstractComponent {
                   </div>`).join(``)}
               </div>
             </section>`}` : ``}
-        <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${this._description}</p>
-
-          <div class="event__photos-container">
-            <div class="event__photos-tape">
-    ${this._picture.map((elem) => `<img class="event__photo" src=${elem} alt="Event photo">`).join(``)}
-            </div>
+      ${this._city ? `${`<section class="event__section  event__section--destination">
+        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+        <p class="event__destination-description">${this._description}</p>
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${this._picture.map((url) => `<img class="event__photo" src="${url}" alt="Event photo">`).join(``)}
           </div>
-        </section>
-      </section>
-    </form>
-  </li>`.trim();
+        </div>
+      </section>`}` : ``}
+    </section>`}
+      ` : ``}
+      </form>`;
 
   }
+
+  _chooseType() {
+    this.getElement()
+    .querySelectorAll(`.event__type-group`).forEach((element) => {
+      element.addEventListener(`click`, (evt) => {
+        if (evt.target.value) {
+          const type = types[types.findIndex((it) => it.id === evt.target.value)];
+          this.getElement().querySelector(`.event__label`).innerHTML = `${type.title} ${type.placeholder}`;
+          this.getElement().querySelector(`.event__type-icon`).src = `img/icons/${type.id}.png`;
+          return `<section class="event__section  event__section--offers">
+            <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+            <div class="event__available-offers">
+            ${type.offers.map(({id, title, price}) => `
+              <div class="event__offer-selector">
+                <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}"
+                type="checkbox" name="event-offer-${id}">
+                <label class="event__offer-label" for="event-offer-${id}">
+                  <span class="event__offer-title">${title}</span>
+                  &plus;
+                  &euro;&nbsp;<span class="event__offer-price">${price}</span>
+                </label>
+              </div>`).join(``)}
+            </div>
+          </section>`;
+          // if (type.offers.length) {
+          //   if (offersContainer) {
+          //     offersContainer.innerHTML = offersHTML;
+          //   } else {
+          //     this.getElement().querySelector(`.event__details`).insertAdjacentHTML(position.AFTERBEGIN, offersHTML);
+          //   }
+          // } else {
+          //   unrender(offersContainer);
+          // }
+        }
+      });
+    });
+  }
+
+
 
   _subscribeOnEvents() {
     this._chooseType();
