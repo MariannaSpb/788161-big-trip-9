@@ -11,7 +11,7 @@ const CARD_COUNT = 3;
 const mainInfoContainer = document.querySelector(`.trip-info`);
 const controlsContainer = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
-const siteTotalCostElement = document.querySelector(`.trip-info__cost-value`);
+// const siteTotalCostElement = document.querySelector(`.trip-info__cost-value`);
 const mainContainer = document.querySelector(`.page-main .page-body__container`);
 
 
@@ -36,11 +36,11 @@ export const totalPrice = (cards) => {
   }, 0);
 };
 
-const checkTypeofPrice = (num) => {
-  if (typeof (num) === `number`) {
-    siteTotalCostElement.textContent = num;
-  }
-};
+// const checkTypeofPrice = (num) => {
+//   if (typeof (num) === `number`) {
+//     siteTotalCostElement.textContent = num;
+//   }
+// };
 
 
 const getInfo = (array) => {
@@ -115,4 +115,4 @@ renderMenu(getMenu());
 renderFilters(getFilters());
 renderTripInfo();
 // renderStatistic();
-//checkTypeofPrice(getPrice(events));
+// checkTypeofPrice(getPrice(events));

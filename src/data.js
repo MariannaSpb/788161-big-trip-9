@@ -1,5 +1,4 @@
 import {getRandomElem} from './components/utils';
-import {getRandomBoolean} from './components/utils';
 
 export const OFFER_COUNT = 2;
 

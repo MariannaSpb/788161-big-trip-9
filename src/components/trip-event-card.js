@@ -13,6 +13,7 @@ export class Event extends AbstractComponent {
     this._duration = this._end - this._start;
     this._eventPrice = eventPrice;
     this._description = city.description;
+    // this._duration = start - end;
   }
 
 

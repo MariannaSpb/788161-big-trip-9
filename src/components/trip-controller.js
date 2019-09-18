@@ -4,7 +4,7 @@ import {render, position, formatDateCount, unrender, Mode} from './utils';
 import {NoPoints} from './event-message';
 import {Sort} from './sort';
 import {PointController} from './point-controller';
-import moment from 'moment';
+// import moment from 'moment';
 
 export class TripController {
   constructor(container, events) {

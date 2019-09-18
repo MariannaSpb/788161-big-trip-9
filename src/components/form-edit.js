@@ -1,5 +1,5 @@
 import {cities, types} from '../data';
-import {unrender, position} from './utils';
+// import {unrender, position} from './utils';
 import {AbstractComponent} from './abstract';
 import moment from 'moment';
 
@@ -33,7 +33,6 @@ export class EditEvent extends AbstractComponent {
   //   }
   //   return this._eventPrice;
   // }
-
 
 
   getTemplate() {
@@ -176,21 +175,11 @@ export class EditEvent extends AbstractComponent {
               </div>`).join(``)}
             </div>
           </section>`;
-          // if (type.offers.length) {
-          //   if (offersContainer) {
-          //     offersContainer.innerHTML = offersHTML;
-          //   } else {
-          //     this.getElement().querySelector(`.event__details`).insertAdjacentHTML(position.AFTERBEGIN, offersHTML);
-          //   }
-          // } else {
-          //   unrender(offersContainer);
-          // }
         }
+        return ``;
       });
     });
   }
-
-
 
   _subscribeOnEvents() {
     this._chooseType();

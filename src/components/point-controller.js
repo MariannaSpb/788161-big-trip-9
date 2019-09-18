@@ -2,6 +2,7 @@ import {EditEvent} from './form-edit';
 import {Event} from './trip-event-card';
 import {render, position, Mode, unrender} from './utils';
 import {cities, types} from '../data';
+import moment from 'moment';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
@@ -99,8 +100,8 @@ export class PointController {
 
         const entry = {
           eventPrice: formData.get(`event-price`),
-          start: new Date(formData.get(`event-start-time`)),
-          end: new Date(formData.get(`event-end-time`)),
+          start: moment(formData.get(`event-start-time`)).format(),
+          end: moment(formData.get(`event-end-time`)).format(),
           type: types[types.findIndex((it) => it.id === formData.get(`event-type`))],
           city: cities[cities.findIndex((city) => city.name === formData.get(`event-destination`))],
           productId: ``,
@@ -116,17 +117,14 @@ export class PointController {
 
         this._onDataChange(entry, mode === Mode.DEFAULT ? this._data : null);
 
-        // const addEventBtn = document.querySelector(`.trip-main__event-add-btn`);
         addEventBtn.removeAttribute(`disabled`);
 
         document.removeEventListener(`keydown`, onEscKeyDown);
-        console.log(`currentViewFORM`, currentView.getElement())
       });
 
 
     render(this._container, currentView.getElement(), position.AFTERBEGIN);
 
-    console.log(`currentViewrender`, currentView.getElement())
   }
 
   setDefaultView() {
