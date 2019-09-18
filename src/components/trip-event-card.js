@@ -6,13 +6,14 @@ export class Event extends AbstractComponent {
   constructor({type, city, eventPrice, start, end}) {
     super();
     this._type = type;
-    this._offers = this._type.offers;
-    this._city = city.name;
+    this._offers = this._type.offers || [];
+    this._city = city.name || ``;
     this._start = start;
     this._end = end;
     this._duration = this._end - this._start;
     this._eventPrice = eventPrice;
     this._description = city.description;
+    // this._duration = start - end;
   }
 
 
