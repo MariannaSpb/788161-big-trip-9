@@ -66,8 +66,8 @@ export class TripController {
         placeholder: `to`,
       },
       city: {},
-      start: moment().format(),
-      end: moment().format(),
+      start: new Date(),
+      end: new Date(),
       eventPrice: ``,
       productId: ``,
     };
