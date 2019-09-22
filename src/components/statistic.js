@@ -1,5 +1,6 @@
 import {AbstractComponent} from './abstract';
 
+
 export class Stats extends AbstractComponent {
   constructor() {
     super();

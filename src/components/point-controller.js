@@ -9,20 +9,20 @@ import 'flatpickr/dist/themes/light.css';
 
 
 export class PointController {
-  constructor(container, data, mode, onDataChange, onChangeView) {
+  constructor(container, data, mode, onDataChange, onChangeView, activateAddCardBtn) {
     this._container = container;
     this._data = data;
     this._event = new Event(this._data);
     this._editForm = new EditEvent(this._data);
     this._onChangeView = onChangeView;
     this._onDataChange = onDataChange;
+    this._activateAddCardBtn = activateAddCardBtn;
     this.init(mode);
   }
 
   init(mode) {
 
     let currentView = this._event;
-    const addEventBtn = document.querySelector(`.trip-main__event-add-btn`);
 
     if (mode === Mode.ADDING) {
       this._editForm.getElement().classList.add(`trip-events__item`);
@@ -30,7 +30,8 @@ export class PointController {
       currentView = this._editForm;
     }
 
-    flatpickr(this._editForm.getElement().querySelector(`input[name= event-start-time]`), {
+
+    flatpickr(this._editForm.getElement().querySelector(`input[name=event-start-time]`), {
       altInput: true,
       allowInput: true,
       enableTime: true,
@@ -38,7 +39,7 @@ export class PointController {
       altFormat: `d/m/y H:i`,
     });
 
-    flatpickr(this._editForm.getElement().querySelector(`input[name= event-end-time]`), {
+    flatpickr(this._editForm.getElement().querySelector(`input[name=event-end-time]`), {
       altInput: true,
       allowInput: true,
       enableTime: true,
@@ -56,6 +57,7 @@ export class PointController {
           unrender(currentView.getElement());
           currentView.removeElement();
           this._container.getElement().removeChild(currentView.getElement());
+          this._activateAddCardBtn();
         }
         document.removeEventListener(`keydown`, onEscKeyDown);
       }
@@ -84,7 +86,9 @@ export class PointController {
         } else if (mode === Mode.ADDING) {
           unrender(currentView.getElement());
           currentView.removeElement();
-          addEventBtn.removeAttribute(`disabled`);
+          // addEventBtn.removeAttribute(`disabled`);
+
+          this._activateAddCardBtn();
         }
       });
 
@@ -92,7 +96,6 @@ export class PointController {
     this._editForm.getElement()
       .addEventListener(`submit`, (evt) => {
         evt.preventDefault();
-        // this._container.replaceChild(this._event.getElement(), this._editForm.getElement());
         this._container.replaceChild(currentView.getElement(), this._editForm.getElement());
         unrender(currentView.getElement());
 
@@ -117,7 +120,9 @@ export class PointController {
 
         this._onDataChange(entry, mode === Mode.DEFAULT ? this._data : null);
 
-        addEventBtn.removeAttribute(`disabled`);
+        // addEventBtn.removeAttribute(`disabled`);
+        this._activateAddCardBtn();
+
 
         document.removeEventListener(`keydown`, onEscKeyDown);
       });

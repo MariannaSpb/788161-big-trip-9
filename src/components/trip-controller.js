@@ -7,16 +7,19 @@ import {PointController} from './point-controller';
 // import moment from 'moment';
 
 export class TripController {
-  constructor(container, events) {
+  constructor(container, onDataChange) {
     this._container = container; // trip-events
-    this._events = events;
+    // this._events = events;
+    this._events = [];
     this._tripDays = new TripDays(); // "trip-days"
     this._noPoints = new NoPoints();
     this._sort = new Sort();
     this._subscriptions = [];
     this._creatingEvent = null;
+    this._activateaddEventBtn = this._activateaddEventBtn.bind(this);
     this._onChangeView = this._onChangeView.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
+    this._onDataChangeMain = onDataChange;
     this._addEventBtn = document.querySelector(`.trip-main__event-add-btn`);
 
     this._addEventBtn.addEventListener(`click`, () => {
@@ -25,35 +28,45 @@ export class TripController {
   }
 
 
-  init() {
-    render(this._container, this._sort.getElement(), position.AFTERBEGIN);
-    render(this._container, this._tripDays.getElement(), position.BEFOREEND);
-
-    this._getPrice(this._events);
-
-    this._sort.getElement()
-    .addEventListener(`click`, (evt) => this._onSortClick(evt));
-
-    this._renderDayList();
-
-    if (this._events.length === 0) {
-      this._renderEmptyMessage();
-      // render(this._container, this._noPoints.getElement(), position.BEFOREEND);
-      // const sortContainer = this._container.querySelector(`.trip-events__trip-sort`);
-      // const daysContainer = this._container.querySelector(`.trip-days`);
-      // sortContainer.remove();
-      // daysContainer.remove();
-      // return;
-    }
-  }
-
   hide() {
     this._container.classList.add(`visually-hidden`);
   }
 
-  show() {
-    this._container.classList.remove(`visually-hidden`);
+  show(events) {
+    if (events && events !== this._events) {
+      this._setEvents(events);
+      this._container.classList.remove(`visually-hidden`);
+    } else {
+      this._container.classList.remove(`visually-hidden`);
+    }
   }
+
+  _setEvents(events) {
+    this._events = events;
+    this._subscriptions = [];
+    this._activateaddEventBtn();
+    this._getPrice(this._events);
+    this._renderCards(this._events);
+  }
+
+
+  _renderCards(events) {
+    this._container.innerHTML = ``;
+    this._clearDayList();
+    if (events.length) {
+      render(this._container, this._sort.getElement(), position.BEFOREEND);
+      // render(this._container, this._tripDays.getElement(), position.BEFOREEND);
+      this._renderDayList(events);
+    } else {
+      this._renderEmptyMessage();
+    }
+    this._sort.getElement().addEventListener(`click`, (evt) => this._onSortClick(evt, events));
+  }
+
+  onFilterSwitch(events) {
+    this._renderCards(events);
+  }
+
 
   createEvent() {
     // if (this._creatingEvent) {
@@ -70,9 +83,10 @@ export class TripController {
       end: new Date(),
       eventPrice: ``,
       productId: ``,
+      isFavorite: false
     };
 
-    this._creatingEvent = new PointController(this._container, defaultEvent, Mode.ADDING, this._onDataChange, this._onChangeView);
+    this._creatingEvent = new PointController(this._container, defaultEvent, Mode.ADDING, this._onDataChange, this._onChangeView, this._activateaddEventBtn);
 
     render(this._container, this._sort.getElement(), position.AFTERBEGIN);
     this._addEventBtn.setAttribute(`disabled`, `disabled`);
@@ -80,17 +94,25 @@ export class TripController {
   }
 
   _renderEvent(container, mock) {
-    const pointController = new PointController(container, mock, Mode.DEFAULT, this._onDataChange, this._onChangeView);
+    const pointController = new PointController(container, mock, Mode.DEFAULT, this._onDataChange, this._onChangeView, this._activateaddEventBtn);
     this._subscriptions.push(pointController.setDefaultView.bind(pointController));
   }
 
-  _renderDayList() {
+  _renderDayList(events) {
   // перерендер
     this._clearDayList();
     render(this._container, this._tripDays.getElement(), position.BEFOREEND);
+    document.querySelector(`#sort-day`).classList.remove(`visually-hidden`);
 
-    // document.querySelector(`#sort-day`).classList.remove(`visually-hidden`);
-    const cardEventsByDate = this._events.reduce((day, event) => {
+    const cardEventsByDate = events.reduce((day, event) => {
+    //   if (day[moment(event.start).format(`MM-DD-YYYY`)]) {
+    //     day[moment(event.start).format(`MM-DD-YYYY`)].push(event);
+    //   } else {
+    //     day[moment(event.start).format(`MM-DD-YYYY`)] = [event];
+    //   }
+
+      //   return day;
+      // }, {});
       const time = formatDateCount(event.start);
       if (!day[time]) {
         day[time] = [];
@@ -102,8 +124,8 @@ export class TripController {
     }, {});
     Object.entries(cardEventsByDate)
     .sort(([a], [b]) => a - b)
-    .forEach(([date, events], index) => {
-      this._rendeEventList(events, date, index);
+    .forEach(([date, eventsItem], index) => {
+      this._rendeEventList(eventsItem, date, index);
     });
   }
 
@@ -117,7 +139,8 @@ export class TripController {
     render(this._tripDays.getElement(), day.getElement(), position.BEFOREEND);
   }
 
-  _onSortClick(evt) {
+
+  _onSortClick(evt, events) {
 
     if (evt.target.tagName !== `LABEL`) {
       return;
@@ -139,16 +162,16 @@ export class TripController {
     switch (evt.target.dataset.sortType) {
       case `time`:
         const sortedByTime = this._events.slice().sort((a, b) => (b.end - b.start) - (a.end - a.start));
-        // console.log(`b.end`, (parseInt((this.duration - this.duration), 10)));
+
         sortedByTime.forEach((mock) => this._renderEvent(eventContainer, mock));
         break;
       case `price`:
-        const sortedByPrice = this._events.slice().sort((a, b) => b.eventPrice - a.eventPrice);
+        const sortedByPrice = this._events.slice().sort((a, b) => a.eventPrice - b.eventPrice);
         sortedByPrice.forEach((mock) => this._renderEvent(eventContainer, mock));
         break;
       case `event`:
         document.querySelector(`.trip-days`).innerHTML = ``;
-        this._renderDayList();
+        this._renderDayList(events);
         break;
     }
   }
@@ -156,8 +179,6 @@ export class TripController {
 
   _onDataChange(newData, oldData) {
     const index = this._events.findIndex((event) => event === oldData);
-    // Если newData равно null, то это значит, что элемент удален.
-    // Создаем новый массив не включая в него удаленный элемент.
     if (newData === null && oldData === null) {
       this._creatingEvent = null;
     }
@@ -172,14 +193,21 @@ export class TripController {
     if (this._events.length) {
       render(this._container, this._sort.getElement(), position.BEFOREEND);
       this._noPoints.getElement().remove();
-      this._renderDayList();
+      // this._renderDayList(events);
     } else {
       this._renderEmptyMessage();
     }
+
+    this._setEvents(this._events);
+    this._onDataChangeMain(this._events);
   }
 
   _onChangeView() {
     this._subscriptions.forEach((it) => it());
+  }
+
+  _activateaddEventBtn() {
+    this._addEventBtn.removeAttribute(`disabled`);
   }
 
   _renderEventMessage() {
@@ -194,12 +222,13 @@ export class TripController {
 
 
   _getPrice(eventsArray) {
+    const costContainer = document.querySelector(`.trip-info__cost-value`);
     const totalPrice = eventsArray.map(({eventPrice}) => eventPrice).reduce((sum, current) => {
       return sum + current;
     }, 0);
-    const allOffersPrice = eventsArray.map(({type}) => type.offers); // собрали все
-    const appliedOffers = allOffersPrice.map((item) => item.filter(({isApplied}) => isApplied)); // собрали трушные
-    const offersPrices = appliedOffers.map((items) => items.map((item) => item.price));
+    const allOffers = eventsArray.map(({type}) => type.offers); // собрали все
+    const checkedOffers = allOffers.map((item) => item.filter(({isApplied}) => isApplied)); // собрали трушные
+    const offersPrices = checkedOffers.map((items) => items.map((item) => item.price));
     const offersPricesTotalCount = offersPrices.map((prices) => prices.reduce((sum, current) => {
       return sum + current;
     }, 0));
@@ -207,16 +236,11 @@ export class TripController {
       return sumCount + current;
     }, 0);
     const result = totalPrice + sum;
-    const costContainer = document.querySelector(`.trip-info__cost-value`);
     costContainer.innerHTML = result;
   }
 
   _renderEmptyMessage() {
     render(this._container, this._noPoints.getElement(), position.BEFOREEND);
-    const sortContainer = this._container.querySelector(`.trip-events__trip-sort`);
-    const daysContainer = this._container.querySelector(`.trip-days`);
-    sortContainer.remove();
-    daysContainer.remove();
     return;
   }
 
