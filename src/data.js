@@ -1,4 +1,5 @@
 import {getRandomElem} from './components/utils';
+import moment from 'moment';
 
 export const OFFER_COUNT = 2;
 
@@ -99,6 +100,15 @@ export const getDuration = (duration) => {
   minutes = (minutes < 10) ? `0` + minutes : minutes;
 
   return `${parseInt(hours, 10) ? `${hours}H` : ``} ${parseInt(minutes, 10) ? `${minutes}M` : ``}`.trim();
+};
+export const getDurationStat = (duration) => {
+  let minutes = Math.floor((duration / (1000 * 60)) % 60);
+  let hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+  hours = (hours < 10) ? `0` + hours : hours;
+  minutes = (minutes < 10) ? `0` + minutes : minutes;
+
+  return `${parseInt(hours, 10) ? `${hours}H` : `${minutes}M`}`.trim();
 };
 
 export const types = [{
@@ -236,11 +246,9 @@ export const types = [{
 export const getMockData = () => ({
   type: types[Math.floor(Math.random() * 10)],
   city: cities[Math.floor(Math.random() * 5)],
-  start: Date.now() - (Math.random() * 2) * 24 * 60 * 60 * 1000,
-  end: Date.now() + (Math.random() * 2) * 24 * 60 * 60 * 1000,
+  start: moment().add(Math.floor(Math.random() * 3), `d`).add(2, `h`).add(20, `m`).format(),
+  end: moment().add(Math.floor(Math.random() * 3), `d`).format(),
   eventPrice: getRandomElem(priceList),
-  // icon: getRandomElem(eventType),
-  // isFavorite: getRandomBoolean(),
   productId: ``,
   picture(count) {
     let arr = [];
